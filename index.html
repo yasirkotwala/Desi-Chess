@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=0.5">
-  <title>دیسی شطرنج - آسان اور بہتر گیم پلے</title>
+  <title>دیسی شطرنج - انسان بمقابلہ کمپیوٹر</title>
   <style>
     * {
       margin: 0;
@@ -14,94 +14,94 @@
       font-family: 'Segoe UI', 'Noto Nastaliq Urdu', 'Arial', sans-serif;
     }
     body {
-      background: linear-gradient(145deg, #1e4a1a 0%, #0f2b0c 100%);
+      background: linear-gradient(145deg, #2d5a27 0%, #1e3b1a 100%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 12px;
+      padding: 8px;
       margin: 0;
     }
     .game-container {
       background: #deb887;
       background-image: radial-gradient(circle at 20% 20%, #f5deb3, #c4a47a);
-      border-radius: 55px;
-      padding: 20px 20px 15px;
-      box-shadow: 0 35px 50px rgba(0,0,0,0.8), inset 0 2px 12px rgba(255,255,200,0.8);
+      border-radius: 45px;
+      padding: 18px 18px 12px;
+      box-shadow: 0 30px 45px rgba(0,0,0,0.7), inset 0 2px 10px rgba(255,255,200,0.7);
       border: 6px solid #5a3e1a;
       display: flex;
       flex-direction: column;
       align-items: center;
-      max-width: 900px;
+      max-width: 850px;
       width: 96%;
       margin: auto;
     }
     h1 {
-      font-size: 2.8rem;
+      font-size: 3rem;
       font-weight: bold;
-      color: #ffd966;
-      text-shadow: 4px 4px 0 #3b2b0f, 6px 6px 0 rgba(0,0,0,0.4);
-      margin-bottom: 8px;
-      letter-spacing: 2px;
+      color: #ffd700;
+      text-shadow: 3px 3px 0 #3b2b0f, 5px 5px 0 rgba(0,0,0,0.3);
+      margin-bottom: 6px;
+      letter-spacing: 3px;
       text-align: center;
-      background: rgba(0,0,0,0.35);
-      padding: 6px 28px;
-      border-radius: 60px;
-      backdrop-filter: blur(4px);
+      line-height: 1.3;
+      background: rgba(0,0,0,0.3);
+      padding: 5px 25px;
+      border-radius: 50px;
+      backdrop-filter: blur(3px);
     }
     canvas {
       display: block;
       margin: 0 auto;
-      border-radius: 40px;
+      border-radius: 35px;
       background: #faf0d7;
-      box-shadow: inset 0 0 28px rgba(0,0,0,0.5), 0 22px 35px rgba(0,0,0,0.7);
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.5), 0 20px 30px rgba(0,0,0,0.7);
       border: 5px solid #8b5a2b;
       width: 100%;
       height: auto;
       max-width: 800px;
       touch-action: none;
-      cursor: pointer;
     }
     .info-panel {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 12px 5px 5px;
-      background: #3e2a18;
-      border-radius: 60px;
-      padding: 10px 20px;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.6), inset 0 1px 6px #ebc28e;
-      color: #ffefc0;
+      margin: 10px 5px 3px;
+      background: #4a3620;
+      border-radius: 50px;
+      padding: 10px 18px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.5), inset 0 1px 5px #ebc28e;
+      color: #ffecb3;
       font-weight: bold;
       font-size: 1.2rem;
       flex-wrap: wrap;
-      gap: 10px;
-      border: 2px solid #c6974a;
+      gap: 8px;
+      border: 2px solid #b98b4a;
     }
     .player-turn {
       background: #ffb703;
       color: #1e2b0c;
-      padding: 8px 20px;
-      border-radius: 40px;
+      padding: 8px 18px;
+      border-radius: 30px;
       font-size: 1.2rem;
       font-weight: bold;
-      box-shadow: 0 0 18px #ffbb33;
+      box-shadow: 0 0 15px #ffaa00;
       letter-spacing: 1px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .score {
       display: flex;
-      gap: 20px;
+      gap: 15px;
       align-items: center;
     }
     .score span {
-      background: #2a241a;
-      padding: 6px 18px;
-      border-radius: 30px;
-      color: #ffdd88;
+      background: #2f2819;
+      padding: 6px 16px;
+      border-radius: 25px;
+      color: #ffd966;
       font-weight: bold;
       border: 1px solid #ca9a4a;
       font-size: 1.1rem;
@@ -109,55 +109,59 @@
     .btn {
       background: #d49b3b;
       border: none;
-      color: #201c14;
+      color: #231f1a;
       font-weight: bold;
-      padding: 8px 24px;
-      border-radius: 40px;
+      padding: 8px 20px;
+      border-radius: 30px;
       font-size: 1rem;
       cursor: pointer;
-      box-shadow: 0 5px 0 #6b4e1e, 0 6px 14px black;
-      transition: all 0.08s linear;
+      box-shadow: 0 5px 0 #6b4e1e, 0 6px 12px black;
+      transition: all 0.1s ease;
       border: 2px solid #ffd58c;
+      letter-spacing: 0.5px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 5px;
     }
     .btn:active {
       transform: translateY(3px);
-      box-shadow: 0 2px 0 #5a3e1a, 0 5px 12px black;
+      box-shadow: 0 2px 0 #5a3e1a, 0 5px 10px black;
       background: #b87c2c;
     }
     .message-area {
       font-size: 1.1rem;
       background: #fff3cd;
-      color: #2f2a1f;
-      border-radius: 30px;
-      padding: 8px 20px;
+      color: #3b2b0f;
+      border-radius: 25px;
+      padding: 6px 16px;
       font-weight: bold;
-      box-shadow: inset 0 0 3px #977b48;
     }
     .end-turn-btn {
       background: #e67e22;
       color: white;
       font-weight: bold;
-      padding: 8px 26px;
-      border-radius: 40px;
+      padding: 8px 22px;
+      border-radius: 30px;
       font-size: 1.1rem;
       cursor: pointer;
-      box-shadow: 0 5px 0 #a0401c, 0 6px 14px black;
-      transition: all 0.08s linear;
+      box-shadow: 0 5px 0 #a0401c, 0 6px 12px black;
+      transition: all 0.1s ease;
       border: 2px solid #f0a04b;
       letter-spacing: 1px;
     }
     .end-turn-btn:active {
       transform: translateY(3px);
-      box-shadow: 0 2px 0 #7a2e12, 0 5px 12px black;
+      box-shadow: 0 2px 0 #7a2e12, 0 5px 10px black;
       background: #c96a1e;
     }
     @media (max-width: 650px) {
-      .info-panel { flex-direction: column; align-items: center; }
-      h1 { font-size: 2rem; }
-      .message-area { font-size: 0.9rem; text-align: center; }
+      .info-panel {
+        flex-direction: column;
+        align-items: center;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
     }
   </style>
 </head>
@@ -176,13 +180,13 @@
       </div>
       <button class="btn" id="resetButton"><span>🔄</span> نئی گیم</button>
     </div>
-    <div style="display: flex; gap: 15px; align-items: center; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
-      <div class="message-area" id="statusMessage">🟢 گوٹی منتخب کریں</div>
+    <div style="display: flex; gap: 12px; align-items: center; margin-top: 6px;">
+      <div class="message-area" id="statusMessage">⚠️ گوٹی منتخب کریں</div>
       <button class="end-turn-btn" id="endTurnButton" style="display: none;">✅ باری ختم کریں</button>
     </div>
   </div>
-  <div style="color: #fff0b5; margin-top: 8px; font-weight: bold; text-shadow: 1px 1px 3px black; font-size: 0.95rem; text-align: center;">
-    💠 آگے، پیچھے، دائیں، بائیں اور ترچھا جائیں | کٹنا لازمی نہیں، محفوظ چال بھی چل سکتے ہیں
+  <div style="color: #ffe3a5; margin-top: 6px; font-weight: bold; text-shadow: 1px 1px 2px black; font-size: 1rem;">
+    دائیں بائیں آگے پیچھے اور کراس میں کاٹیں | مسلسل کٹس ممکن ہیں
   </div>
 </div>
 
@@ -191,12 +195,13 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    // گیم پیرامیٹرز
+    // ----- گیم اسٹیٹ -----
     const BOARD_SIZE = 5;
     const TOTAL_PIECES_PER_PLAYER = 10;
     const CELL_SIZE = canvas.width / (BOARD_SIZE + 0.5);
     const OFFSET = (canvas.width - CELL_SIZE * (BOARD_SIZE - 1)) / 2;
 
+    // پلیئر 1 = انسان (سرخ) ، پلیئر 2 = کمپیوٹر (نیلا)
     const HUMAN = 1;
     const COMPUTER = 2;
 
@@ -209,26 +214,25 @@
     let player2Pieces = TOTAL_PIECES_PER_PLAYER;
     let validMoves = [];
     
-    // نئے اصول: کٹنا لازمی نہیں، صرف اسی صورت میں جاری کٹس ہوں تو مجبوری
-    let forcedCaptureChain = false;     // اگر پہلے سے کٹ کیا ہو اور مزید کٹ ممکن ہو تو صرف اس گوٹی سے کٹ کر سکتے ہیں
-    let chainPieceRow = -1, chainPieceCol = -1;
-    let justCaptured = false;           // اس موڑ میں کٹ ہوا ہے یا نہیں
-    
+    let hasCapturedThisTurn = false;
+    let mandatoryCapturePiece = null;
+    let turnActive = false;
     let computerThinking = false;
 
-    // ---- بورڈ سیٹ اپ ----
+    // ----- بورڈ انیشیئلائز -----
     function initBoard() {
       board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
-      // انسان (سرخ) نیچے کی دو لائنیں
+      
       for (let c = 0; c < BOARD_SIZE; c++) {
         board[4][c] = { player: HUMAN };
         board[3][c] = { player: HUMAN };
       }
-      // کمپیوٹر (نیلا) اوپر کی دو لائنیں
+      
       for (let c = 0; c < BOARD_SIZE; c++) {
         board[0][c] = { player: COMPUTER };
         board[1][c] = { player: COMPUTER };
       }
+      
       player1Pieces = TOTAL_PIECES_PER_PLAYER;
       player2Pieces = TOTAL_PIECES_PER_PLAYER;
       currentPlayer = HUMAN;
@@ -237,10 +241,9 @@
       gameOver = false;
       winner = null;
       validMoves = [];
-      forcedCaptureChain = false;
-      chainPieceRow = -1;
-      chainPieceCol = -1;
-      justCaptured = false;
+      hasCapturedThisTurn = false;
+      mandatoryCapturePiece = null;
+      turnActive = false;
       computerThinking = false;
       updatePieceCounts();
       updateUI();
@@ -252,7 +255,7 @@
         for (let c = 0; c < BOARD_SIZE; c++) {
           if (board[r][c]) {
             if (board[r][c].player === HUMAN) p1++;
-            else p2++;
+            else if (board[r][c].player === COMPUTER) p2++;
           }
         }
       }
@@ -260,192 +263,100 @@
       player2Pieces = p2;
     }
 
-    // ---- حرکات اور کٹ کے اصول ----
-    // کٹ کی ممکنہ حرکات (صرف کٹ)
+    function getGridFromCoord(x, y) {
+      let col = Math.round((x - OFFSET) / CELL_SIZE);
+      let row = Math.round((y - OFFSET) / CELL_SIZE);
+      if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) return null;
+      const cellX = OFFSET + col * CELL_SIZE;
+      const cellY = OFFSET + row * CELL_SIZE;
+      const dist = Math.hypot(x - cellX, y - cellY);
+      if (dist > CELL_SIZE * 0.44) return null;
+      return { row, col };
+    }
+
     function getCaptureMovesOnly(row, col, player) {
       const captures = [];
-      const dirs = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
-      for (let [dr, dc] of dirs) {
-        const midRow = row + dr;
-        const midCol = col + dc;
-        if (midRow < 0 || midRow >= BOARD_SIZE || midCol < 0 || midCol >= BOARD_SIZE) continue;
-        if (board[midRow][midCol] && board[midRow][midCol].player !== player) {
-          const jumpRow = midRow + dr;
-          const jumpCol = midCol + dc;
-          if (jumpRow >= 0 && jumpRow < BOARD_SIZE && jumpCol >= 0 && jumpCol < BOARD_SIZE && board[jumpRow][jumpCol] === null) {
-            captures.push({ row: jumpRow, col: jumpCol, type: 'capture', capturedRow: midRow, capturedCol: midCol });
+      const directions = [
+        [-1, -1], [-1, 0], [-1, 1],
+        [0, -1],           [0, 1],
+        [1, -1],  [1, 0],  [1, 1]
+      ];
+
+      for (let [dr, dc] of directions) {
+        const nr = row + dr;
+        const nc = col + dc;
+        if (nr < 0 || nr >= BOARD_SIZE || nc < 0 || nc >= BOARD_SIZE) continue;
+        
+        if (board[nr][nc] && board[nr][nc].player !== player) {
+          const jumpRow = nr + dr;
+          const jumpCol = nc + dc;
+          if (jumpRow >= 0 && jumpRow < BOARD_SIZE && jumpCol >= 0 && jumpCol < BOARD_SIZE) {
+            if (board[jumpRow][jumpCol] === null) {
+              captures.push({ 
+                row: jumpRow, 
+                col: jumpCol, 
+                type: 'capture', 
+                capturedRow: nr, 
+                capturedCol: nc 
+              });
+            }
           }
         }
       }
       return captures;
     }
 
-    // تمام ممکنہ حرکات (چلنا + کٹ)
     function getAllMoves(row, col, player) {
       const moves = [];
-      const dirs = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
-      for (let [dr, dc] of dirs) {
+      const directions = [
+        [-1, -1], [-1, 0], [-1, 1],
+        [0, -1],           [0, 1],
+        [1, -1],  [1, 0],  [1, 1]
+      ];
+
+      for (let [dr, dc] of directions) {
         const nr = row + dr;
         const nc = col + dc;
         if (nr < 0 || nr >= BOARD_SIZE || nc < 0 || nc >= BOARD_SIZE) continue;
+        
         if (board[nr][nc] === null) {
           moves.push({ row: nr, col: nc, type: 'move' });
-        } 
-        else if (board[nr][nc].player !== player) {
+        } else if (board[nr][nc].player !== player) {
           const jumpRow = nr + dr;
           const jumpCol = nc + dc;
-          if (jumpRow >= 0 && jumpRow < BOARD_SIZE && jumpCol >= 0 && jumpCol < BOARD_SIZE && board[jumpRow][jumpCol] === null) {
-            moves.push({ row: jumpRow, col: jumpCol, type: 'capture', capturedRow: nr, capturedCol: nc });
+          if (jumpRow >= 0 && jumpRow < BOARD_SIZE && jumpCol >= 0 && jumpCol < BOARD_SIZE) {
+            if (board[jumpRow][jumpCol] === null) {
+              moves.push({ 
+                row: jumpRow, 
+                col: jumpCol, 
+                type: 'capture', 
+                capturedRow: nr, 
+                capturedCol: nc 
+              });
+            }
           }
         }
       }
       return moves;
     }
 
-    // کسی کھلاڑی کو کٹ کرنے کی مجبوری ہے یا نہیں؟ (نئے اصول: اگر کوئی کٹ ممکن ہے تو پھر بھی کٹ لازمی نہیں! صرف جاری سلسلہ میں مجبوری)
-    // تاکہ صارف کو آزادی ہو محفوظ چال بھی چل سکے۔ ہم صرف چین کی مجبوری رکھیں گے۔
-    function hasAnyCapture(player) {
-      for (let r=0; r<BOARD_SIZE; r++) {
-        for (let c=0; c<BOARD_SIZE; c++) {
+    function playerHasAnyCapture(player) {
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
           if (board[r][c] && board[r][c].player === player) {
-            if (getCaptureMovesOnly(r,c,player).length > 0) return true;
+            if (getCaptureMovesOnly(r, c, player).length > 0) return true;
           }
         }
       }
       return false;
     }
 
-    // گوٹی کے لیے موثر حرکات (چین مجبوری کے تحت)
-    function getValidMovesForPiece(row, col, player) {
-      if (forcedCaptureChain && (chainPieceRow === row && chainPieceCol === col)) {
-        // صرف کٹ حرکات اگر چین میں ہو
-        return getCaptureMovesOnly(row, col, player);
-      }
-      if (forcedCaptureChain) return []; // کوئی اور گوٹی نہیں چل سکتی جب تک چین ختم نہ ہو
-      // ورنہ تمام حرکات (کٹ اور سادہ چال) — کٹ لازمی نہیں
-      return getAllMoves(row, col, player);
-    }
-
-    // ---- گیم میکینکس ----
-    function clearSelection() {
-      selectedRow = -1;
-      selectedCol = -1;
-      validMoves = [];
-    }
-
-    // باری ختم کرنے کا طریقہ
-    function endCurrentTurn() {
-      clearSelection();
-      forcedCaptureChain = false;
-      chainPieceRow = -1;
-      chainPieceCol = -1;
-      justCaptured = false;
-      
-      // مخالف کے پاس چال ہے یا نہیں (چیک کریں)
-      const opponent = (currentPlayer === HUMAN) ? COMPUTER : HUMAN;
-      let opponentHasMove = false;
-      for (let r=0; r<BOARD_SIZE; r++) {
-        for (let c=0; c<BOARD_SIZE; c++) {
-          if (board[r][c] && board[r][c].player === opponent) {
-            if (getAllMoves(r, c, opponent).length > 0) {
-              opponentHasMove = true;
-              break;
-            }
-          }
-        }
-        if (opponentHasMove) break;
-      }
-      
-      if (!opponentHasMove && !gameOver) {
-        gameOver = true;
-        winner = currentPlayer;
-        updateUI();
-        return;
-      }
-      
-      currentPlayer = opponent;
-      updateUI();
-      
-      if (!gameOver && currentPlayer === COMPUTER) {
-        scheduleComputerMove();
-      }
-    }
-    
-    // حرکت کرنے والا مرکزی فنکشن
-    function makeMove(targetRow, targetCol, playerOverride = null) {
-      const player = playerOverride || currentPlayer;
-      if (gameOver) return false;
-      if (selectedRow === -1 || selectedCol === -1) return false;
-      
-      const move = validMoves.find(m => m.row === targetRow && m.col === targetCol);
-      if (!move) return false;
-      
-      const piece = board[selectedRow][selectedCol];
-      if (!piece || piece.player !== player) return false;
-      
-      // حرکت apply کریں
-      board[selectedRow][selectedCol] = null;
-      board[targetRow][targetCol] = piece;
-      
-      let captureOccurred = false;
-      if (move.type === 'capture') {
-        board[move.capturedRow][move.capturedCol] = null;
-        captureOccurred = true;
-        justCaptured = true;
-      }
-      
-      updatePieceCounts();
-      
-      // جیت کی حالت
-      if (player1Pieces === 0) {
-        gameOver = true;
-        winner = COMPUTER;
-        clearSelection();
-        forcedCaptureChain = false;
-        updateUI();
-        return true;
-      }
-      if (player2Pieces === 0) {
-        gameOver = true;
-        winner = HUMAN;
-        clearSelection();
-        forcedCaptureChain = false;
-        updateUI();
-        return true;
-      }
-      
-      // اگر کٹ ہوا اور مزید کٹ ممکن ہو تو چین قائم کریں (لازمی کٹ جاری)
-      if (captureOccurred) {
-        const furtherCaptures = getCaptureMovesOnly(targetRow, targetCol, player);
-        if (furtherCaptures.length > 0) {
-          forcedCaptureChain = true;
-          chainPieceRow = targetRow;
-          chainPieceCol = targetCol;
-          // خودکار طور پر اسی گوٹی کو منتخب رکھیں
-          selectedRow = targetRow;
-          selectedCol = targetCol;
-          validMoves = furtherCaptures;
-          updateUI();
-          if (player === HUMAN) {
-            document.getElementById('statusMessage').innerHTML = '⚔️ مزید کٹ لازمی ہے! وہی گوٹی سے کٹ کریں';
-          }
-          return true;
-        }
-      }
-      
-      // اگر کٹ نہیں ہوا یا مزید کٹ نہیں -> باری ختم
-      endCurrentTurn();
-      return true;
-    }
-    
-    // انسانی کھلاڑی گوٹی منتخب کرے
     function selectPiece(row, col) {
       if (gameOver || currentPlayer !== HUMAN || computerThinking) return;
       
-      // اگر چین مجبوری ہے تو صرف مخصوص گوٹی منتخب ہو سکتی ہے
-      if (forcedCaptureChain) {
-        if (row !== chainPieceRow || col !== chainPieceCol) {
-          document.getElementById('statusMessage').innerHTML = '⚠️ پہلے اسی گوٹی سے مزید کٹ کریں!';
+      if (mandatoryCapturePiece) {
+        if (row !== mandatoryCapturePiece.row || col !== mandatoryCapturePiece.col) {
+          document.getElementById('statusMessage').textContent = '⚠️ آپ کو اس گوٹی سے کٹ جاری رکھنا ہے!';
           return;
         }
       }
@@ -453,82 +364,212 @@
       if (board[row][col] && board[row][col].player === HUMAN) {
         selectedRow = row;
         selectedCol = col;
-        // ممکنہ حرکات (کٹ لازمی نہیں، صرف چین کی پابندی)
-        validMoves = getValidMovesForPiece(row, col, HUMAN);
-        if (validMoves.length === 0) {
-          document.getElementById('statusMessage').innerHTML = '⚠️ اس گوٹی کے لیے کوئی چال نہیں';
-          clearSelection();
+        
+        if (mandatoryCapturePiece) {
+          validMoves = getCaptureMovesOnly(row, col, HUMAN);
         } else {
-          document.getElementById('statusMessage').innerHTML = '✅ اب合法的 جگہ منتخب کریں';
+          if (!hasCapturedThisTurn && playerHasAnyCapture(HUMAN)) {
+            validMoves = getCaptureMovesOnly(row, col, HUMAN);
+            if (validMoves.length === 0) {
+              document.getElementById('statusMessage').textContent = '⚠️ کٹ لازمی ہے، اس گوٹی سے کٹ ممکن نہیں';
+              clearSelection();
+              updateUI();
+              return;
+            }
+          } else {
+            validMoves = getAllMoves(row, col, HUMAN);
+          }
         }
+        
         updateUI();
+        document.getElementById('statusMessage').textContent = '✅ منزل کا انتخاب کریں';
       } else {
         clearSelection();
-        document.getElementById('statusMessage').innerHTML = '❌ اپنی گوٹی منتخب کریں';
         updateUI();
+        document.getElementById('statusMessage').textContent = '❌ اپنی گوٹی چنیں';
       }
     }
-    
-    // دستی باری ختم (اختیاری)
-    function manualEndTurn() {
-      if (gameOver || currentPlayer !== HUMAN) return;
-      if (forcedCaptureChain) {
-        document.getElementById('statusMessage').innerHTML = '⚠️ پہلے باقی کٹ مکمل کریں، باری ختم نہیں کر سکتے';
-        return;
+
+    function clearSelection() {
+      selectedRow = -1;
+      selectedCol = -1;
+      validMoves = [];
+    }
+
+    function makeMove(targetRow, targetCol, playerOverride = null) {
+      const player = playerOverride || currentPlayer;
+      if (gameOver || selectedRow === -1 || selectedCol === -1) return false;
+
+      const move = validMoves.find(m => m.row === targetRow && m.col === targetCol);
+      if (!move) {
+        if (player === HUMAN) document.getElementById('statusMessage').textContent = '⛔ غلط چال';
+        return false;
+      }
+
+      const piece = board[selectedRow][selectedCol];
+      board[selectedRow][selectedCol] = null;
+      board[targetRow][targetCol] = piece;
+      const newRow = targetRow;
+      const newCol = targetCol;
+
+      let capturedThisMove = false;
+      
+      if (move.type === 'capture') {
+        board[move.capturedRow][move.capturedCol] = null;
+        hasCapturedThisTurn = true;
+        capturedThisMove = true;
+        turnActive = true;
+      }
+
+      updatePieceCounts();
+
+      if (player1Pieces === 0) {
+        gameOver = true;
+        winner = COMPUTER;
+        clearSelection();
+        mandatoryCapturePiece = null;
+        turnActive = false;
+        updateUI();
+        return true;
+      } else if (player2Pieces === 0) {
+        gameOver = true;
+        winner = HUMAN;
+        clearSelection();
+        mandatoryCapturePiece = null;
+        turnActive = false;
+        updateUI();
+        return true;
+      }
+
+      if (capturedThisMove) {
+        const furtherCaptures = getCaptureMovesOnly(newRow, newCol, player);
+        if (furtherCaptures.length > 0) {
+          mandatoryCapturePiece = { row: newRow, col: newCol };
+          selectedRow = newRow;
+          selectedCol = newCol;
+          validMoves = furtherCaptures;
+          updateUI();
+          if (player === HUMAN) {
+            document.getElementById('statusMessage').textContent = '⚔️ مزید کٹ کریں یا باری ختم کریں';
+          }
+          return true;
+        }
+      }
+
+      endCurrentTurn();
+      return true;
+    }
+
+    function endCurrentTurn() {
+      clearSelection();
+      mandatoryCapturePiece = null;
+      hasCapturedThisTurn = false;
+      turnActive = false;
+      
+      const opponent = currentPlayer === HUMAN ? COMPUTER : HUMAN;
+      
+      let opponentHasMoves = false;
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          if (board[r][c] && board[r][c].player === opponent) {
+            if (getAllMoves(r, c, opponent).length > 0) {
+              opponentHasMoves = true;
+              break;
+            }
+          }
+        }
+        if (opponentHasMoves) break;
+      }
+      
+      if (!opponentHasMoves) {
+        gameOver = true;
+        winner = currentPlayer;
+      } else {
+        currentPlayer = opponent;
+      }
+      
+      updateUI();
+      
+      if (!gameOver && currentPlayer === COMPUTER) {
+        scheduleComputerMove();
+      }
+    }
+
+    function endTurnManually() {
+      if (gameOver || currentPlayer !== HUMAN || !turnActive) return;
+      if (mandatoryCapturePiece) {
+        const furtherCaptures = getCaptureMovesOnly(mandatoryCapturePiece.row, mandatoryCapturePiece.col, HUMAN);
+        if (furtherCaptures.length > 0) {
+          document.getElementById('statusMessage').textContent = '⚠️ مزید کٹ ممکن ہے، پہلے کٹ کریں';
+          return;
+        }
       }
       endCurrentTurn();
     }
-    
-    // ---- کمپیوٹر AI (بہتر: پہلے کٹ کو ترجیح، ورنہ بہترین محفوظ چال) ----
-    function getAllPieces(player) {
+
+    // ----- کمپیوٹر AI -----
+    function getAllPiecesForPlayer(player) {
       const pieces = [];
-      for (let r=0; r<BOARD_SIZE; r++) {
-        for (let c=0; c<BOARD_SIZE; c++) {
-          if (board[r][c] && board[r][c].player === player) pieces.push({row: r, col: c});
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          if (board[r][c] && board[r][c].player === player) {
+            pieces.push({ row: r, col: c });
+          }
         }
       }
       return pieces;
     }
-    
-    function computerGetBestMove() {
-      const pieces = getAllPieces(COMPUTER);
+
+    function getValidMovesForPiece(row, col, player, mustCapture) {
+      if (mustCapture) {
+        return getCaptureMovesOnly(row, col, player);
+      }
+      const allMoves = getAllMoves(row, col, player);
+      const captures = allMoves.filter(m => m.type === 'capture');
+      return captures.length > 0 ? captures : allMoves;
+    }
+
+    function computerFindBestMove() {
+      const pieces = getAllPiecesForPlayer(COMPUTER);
       if (pieces.length === 0) return null;
       
-      // اگر کمپیوٹر کے پاس چین مجبوری ہے
-      if (forcedCaptureChain && chainPieceRow !== -1) {
-        const chainMoves = getCaptureMovesOnly(chainPieceRow, chainPieceCol, COMPUTER);
-        if (chainMoves.length > 0) {
-          return { piece: {row: chainPieceRow, col: chainPieceCol}, move: chainMoves[0] };
-        } else {
-          // کچھ غلطی ، مجبوری ختم کریں
-          forcedCaptureChain = false;
-        }
-      }
+      const mustCapture = playerHasAnyCapture(COMPUTER);
+      let bestMove = null;
+      let bestPiece = null;
       
-      // پہلے تمام کٹ مووز ڈھونڈیں (ترجیح)
       for (let piece of pieces) {
-        const captures = getCaptureMovesOnly(piece.row, piece.col, COMPUTER);
-        if (captures.length > 0) {
-          return { piece: piece, move: captures[0] };
+        const moves = getValidMovesForPiece(piece.row, piece.col, COMPUTER, mustCapture);
+        for (let move of moves) {
+          if (move.type === 'capture') {
+            return { piece, move };
+          }
+          if (!bestMove) {
+            bestMove = move;
+            bestPiece = piece;
+          }
         }
       }
       
-      // ورنہ کوئی بھی چال (محفوظ) بہتر انتخاب کے لیے بے ترتیب نہیں، بس پہلی اچھی چال
+      if (bestPiece && bestMove) {
+        return { piece: bestPiece, move: bestMove };
+      }
+      
       for (let piece of pieces) {
         const moves = getAllMoves(piece.row, piece.col, COMPUTER);
         if (moves.length > 0) {
-          // سادہ چال کو ترجیح دو (کٹ نہیں)
-          return { piece: piece, move: moves[0] };
+          return { piece, move: moves[0] };
         }
       }
+      
       return null;
     }
-    
+
     function executeComputerMove() {
       if (gameOver || currentPlayer !== COMPUTER) {
         computerThinking = false;
         return;
       }
+      
       computerThinking = true;
       updateUI();
       
@@ -539,40 +580,25 @@
           return;
         }
         
-        // اگر کمپیوٹر کے پاس پہلے سے چین ہے تو اسے ہینڈل کریں
-        if (forcedCaptureChain && chainPieceRow !== -1) {
-          const chainMoves = getCaptureMovesOnly(chainPieceRow, chainPieceCol, COMPUTER);
-          if (chainMoves.length > 0) {
-            selectedRow = chainPieceRow;
-            selectedCol = chainPieceCol;
-            validMoves = chainMoves;
-            const move = validMoves[0];
-            makeMove(move.row, move.col, COMPUTER);
+        if (mandatoryCapturePiece) {
+          selectedRow = mandatoryCapturePiece.row;
+          selectedCol = mandatoryCapturePiece.col;
+          validMoves = getCaptureMovesOnly(selectedRow, selectedCol, COMPUTER);
+        } else {
+          const result = computerFindBestMove();
+          if (!result) {
+            gameOver = true;
+            winner = HUMAN;
             computerThinking = false;
             updateUI();
             return;
-          } else {
-            forcedCaptureChain = false;
           }
-        }
-        
-        const best = computerGetBestMove();
-        if (!best) {
-          // کوئی چال نہیں تو باری ختم
-          endCurrentTurn();
-          computerThinking = false;
-          updateUI();
-          return;
-        }
-        
-        selectedRow = best.piece.row;
-        selectedCol = best.piece.col;
-        // تمام مووز (اگر کٹ ممکن ہو تو صرف کٹ کی لسٹ نہیں، لیکن ہم نے پہلے ہی کٹ کو ترجیح دی)
-        const mustCaptureCheck = getCaptureMovesOnly(selectedRow, selectedCol, COMPUTER);
-        if (mustCaptureCheck.length > 0) {
-          validMoves = mustCaptureCheck;
-        } else {
-          validMoves = getAllMoves(selectedRow, selectedCol, COMPUTER);
+          
+          selectedRow = result.piece.row;
+          selectedCol = result.piece.col;
+          
+          const mustCapture = playerHasAnyCapture(COMPUTER);
+          validMoves = getValidMovesForPiece(selectedRow, selectedCol, COMPUTER, mustCapture);
         }
         
         if (validMoves.length > 0) {
@@ -584,40 +610,26 @@
         
         computerThinking = false;
         updateUI();
-      }, 280);
+      }, 300);
     }
-    
+
     function scheduleComputerMove() {
       if (gameOver || currentPlayer !== COMPUTER || computerThinking) return;
       executeComputerMove();
     }
-    
-    // ---- کینوس تعامل ----
-    function getGridFromCoord(x, y) {
-      let col = Math.round((x - OFFSET) / CELL_SIZE);
-      let row = Math.round((y - OFFSET) / CELL_SIZE);
-      if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) return null;
-      const cellX = OFFSET + col * CELL_SIZE;
-      const cellY = OFFSET + row * CELL_SIZE;
-      const dist = Math.hypot(x - cellX, y - cellY);
-      if (dist > CELL_SIZE * 0.44) return null;
-      return { row, col };
-    }
-    
+
     function handleCanvasInteraction(e) {
       e.preventDefault();
-      if (gameOver) {
-        document.getElementById('statusMessage').innerHTML = '🏆 گیم ختم! نیا گیم شروع کریں';
+      if (gameOver || currentPlayer !== HUMAN || computerThinking) {
+        if (gameOver) document.getElementById('statusMessage').textContent = '🏆 گیم ختم! نیا گیم شروع کریں';
+        else if (computerThinking) document.getElementById('statusMessage').textContent = '💻 کمپیوٹر سوچ رہا ہے...';
         return;
       }
-      if (currentPlayer !== HUMAN || computerThinking) {
-        if (computerThinking) document.getElementById('statusMessage').innerHTML = '💻 کمپیوٹر سوچ رہا ہے...';
-        return;
-      }
-      
+
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width;
       const scaleY = canvas.height / rect.height;
+
       let clientX, clientY;
       if (e.touches) {
         clientX = e.touches[0].clientX;
@@ -626,153 +638,255 @@
         clientX = e.clientX;
         clientY = e.clientY;
       }
+
       const canvasX = (clientX - rect.left) * scaleX;
       const canvasY = (clientY - rect.top) * scaleY;
+
       const gridPos = getGridFromCoord(canvasX, canvasY);
       if (!gridPos) {
-        if (!forcedCaptureChain) clearSelection();
-        updateUI();
+        if (selectedRow !== -1 && !mandatoryCapturePiece) {
+          clearSelection();
+          updateUI();
+          document.getElementById('statusMessage').textContent = 'اپنی گوٹی چنیں';
+        }
         return;
       }
+
       const { row, col } = gridPos;
-      
+
       if (selectedRow !== -1 && selectedCol !== -1) {
-        makeMove(row, col);
+        const success = makeMove(row, col);
+        if (!success) {
+          if (board[row][col] && board[row][col].player === HUMAN) {
+            if (!mandatoryCapturePiece || (mandatoryCapturePiece.row === row && mandatoryCapturePiece.col === col)) {
+              selectPiece(row, col);
+            }
+          } else {
+            if (!mandatoryCapturePiece) {
+              clearSelection();
+            }
+            updateUI();
+            document.getElementById('statusMessage').textContent = '⛔ غلط جگہ';
+          }
+        }
       } else {
-        selectPiece(row, col);
+        if (board[row][col] && board[row][col].player === HUMAN) {
+          selectPiece(row, col);
+        } else {
+          document.getElementById('statusMessage').textContent = '🔴 اپنی گوٹی پر کلک کریں';
+        }
       }
     }
-    
-    // ---- گرافکس ----
+
+    function updateUI() {
+      drawBoard();
+      document.getElementById('p1Score').textContent = `🔴 ${player1Pieces}`;
+      document.getElementById('p2Score').textContent = `🔵 ${player2Pieces}`;
+
+      const turnEl = document.getElementById('turnIndicator');
+      const endTurnBtn = document.getElementById('endTurnButton');
+      
+      if (gameOver) {
+        if (winner === HUMAN) turnEl.innerHTML = '<span>🏆</span> آپ جیت گئے!';
+        else if (winner === COMPUTER) turnEl.innerHTML = '<span>💻</span> کمپیوٹر جیت گیا';
+        document.getElementById('statusMessage').textContent = '🎉 مبارک ہو! نیا گیم شروع کریں';
+        endTurnBtn.style.display = 'none';
+      } else {
+        if (currentPlayer === HUMAN) {
+          turnEl.innerHTML = '<span>🔴</span> آپ کی باری';
+        } else {
+          turnEl.innerHTML = '<span>🔵</span> کمپیوٹر کی باری';
+        }
+        
+        if (currentPlayer === HUMAN && turnActive) {
+          endTurnBtn.style.display = 'inline-block';
+        } else {
+          endTurnBtn.style.display = 'none';
+        }
+        
+        if (selectedRow === -1 && !turnActive && currentPlayer === HUMAN) {
+          document.getElementById('statusMessage').textContent = '👆 گوٹی منتخب کریں';
+        } else if (computerThinking) {
+          document.getElementById('statusMessage').textContent = '💻 کمپیوٹر سوچ رہا ہے...';
+        } else if (currentPlayer === COMPUTER) {
+          document.getElementById('statusMessage').textContent = '💻 کمپیوٹر چال چل رہا ہے';
+        }
+      }
+    }
+
     function drawBoard() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawGridAndSquares();
       drawPieces();
-      if (currentPlayer === HUMAN && !computerThinking && !gameOver) {
+      if (currentPlayer === HUMAN && !computerThinking) {
         drawSelectionHighlight();
         drawValidMoveIndicators();
-        if (forcedCaptureChain && chainPieceRow !== -1) {
-          drawChainHighlight();
+        if (mandatoryCapturePiece) {
+          drawMandatoryPieceHighlight();
         }
       }
     }
-    
+
+    function drawMandatoryPieceHighlight() {
+      if (!mandatoryCapturePiece || currentPlayer !== HUMAN) return;
+      const x = OFFSET + mandatoryCapturePiece.col * CELL_SIZE;
+      const y = OFFSET + mandatoryCapturePiece.row * CELL_SIZE;
+      ctx.strokeStyle = '#ff4444';
+      ctx.lineWidth = 5;
+      ctx.shadowBlur = 25;
+      ctx.shadowColor = '#ff0000';
+      ctx.setLineDash([10, 5]);
+      ctx.beginPath();
+      ctx.arc(x, y, CELL_SIZE*0.44, 0, 2*Math.PI);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.shadowColor = 'transparent';
+    }
+
     function drawGridAndSquares() {
       ctx.strokeStyle = '#4a2c0f';
       ctx.lineWidth = 4.5;
-      ctx.shadowBlur = 3;
-      for (let i=0; i<BOARD_SIZE; i++) {
-        const x = OFFSET + i*CELL_SIZE;
-        const y = OFFSET + i*CELL_SIZE;
-        ctx.beginPath(); ctx.moveTo(OFFSET, y); ctx.lineTo(OFFSET+(BOARD_SIZE-1)*CELL_SIZE, y); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(x, OFFSET); ctx.lineTo(x, OFFSET+(BOARD_SIZE-1)*CELL_SIZE); ctx.stroke();
+      ctx.shadowColor = '#aa8b65';
+      ctx.shadowBlur = 4;
+
+      for (let i = 0; i < BOARD_SIZE; i++) {
+        const x = OFFSET + i * CELL_SIZE;
+        const y = OFFSET + i * CELL_SIZE;
+        ctx.beginPath();
+        ctx.moveTo(OFFSET, y);
+        ctx.lineTo(OFFSET + (BOARD_SIZE-1) * CELL_SIZE, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, OFFSET);
+        ctx.lineTo(x, OFFSET + (BOARD_SIZE-1) * CELL_SIZE);
+        ctx.stroke();
       }
+
       ctx.strokeStyle = '#7b5e3b';
-      ctx.lineWidth = 2.5;
-      for (let r=0; r<BOARD_SIZE-1; r++) {
-        for (let c=0; c<BOARD_SIZE-1; c++) {
-          const x1 = OFFSET + c*CELL_SIZE, y1 = OFFSET + r*CELL_SIZE;
-          const x2 = OFFSET + (c+1)*CELL_SIZE, y2 = OFFSET + (r+1)*CELL_SIZE;
-          ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(x2,y1); ctx.lineTo(x1,y2); ctx.stroke();
+      ctx.lineWidth = 2.8;
+      for (let r = 0; r < BOARD_SIZE-1; r++) {
+        for (let c = 0; c < BOARD_SIZE-1; c++) {
+          const x1 = OFFSET + c * CELL_SIZE;
+          const y1 = OFFSET + r * CELL_SIZE;
+          const x2 = OFFSET + (c+1) * CELL_SIZE;
+          const y2 = OFFSET + (r+1) * CELL_SIZE;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(x2, y1);
+          ctx.lineTo(x1, y2);
+          ctx.stroke();
         }
       }
-      ctx.fillStyle = '#3b280b';
-      for(let r=0;r<BOARD_SIZE;r++) for(let c=0;c<BOARD_SIZE;c++) {
-        ctx.beginPath(); ctx.arc(OFFSET+c*CELL_SIZE, OFFSET+r*CELL_SIZE, 6, 0, 2*Math.PI); ctx.fill();
-      }
+      ctx.shadowColor = 'transparent';
       ctx.shadowBlur = 0;
+      
+      ctx.fillStyle = '#3b280b';
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          ctx.beginPath();
+          ctx.arc(OFFSET + c * CELL_SIZE, OFFSET + r * CELL_SIZE, 7, 0, 2*Math.PI);
+          ctx.fill();
+        }
+      }
     }
-    
+
     function drawPieces() {
-      for(let r=0;r<BOARD_SIZE;r++) {
-        for(let c=0;c<BOARD_SIZE;c++) {
-          if(board[r][c]) {
-            const x = OFFSET + c*CELL_SIZE, y = OFFSET + r*CELL_SIZE;
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          if (board[r][c]) {
+            const x = OFFSET + c * CELL_SIZE;
+            const y = OFFSET + r * CELL_SIZE;
+            const player = board[r][c].player;
+            
+            ctx.shadowColor = '#333';
             ctx.shadowBlur = 12;
-            ctx.beginPath(); ctx.arc(x, y, CELL_SIZE*0.35, 0, 2*Math.PI);
-            ctx.fillStyle = board[r][c].player === HUMAN ? '#c42e2e' : '#2e5cb8';
+            ctx.beginPath();
+            ctx.arc(x, y, CELL_SIZE*0.35, 0, 2*Math.PI);
+            ctx.fillStyle = player === HUMAN ? '#c42e2e' : '#2e5cb8';
             ctx.fill();
-            ctx.strokeStyle = '#f9e076'; ctx.lineWidth = 3.5; ctx.stroke();
+            ctx.shadowBlur = 4;
+            ctx.strokeStyle = '#f9e076';
+            ctx.lineWidth = 3.5;
+            ctx.stroke();
+            
             ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.arc(x-2, y-2, CELL_SIZE*0.2, 0, 2*Math.PI);
+            ctx.fillStyle = player === HUMAN ? '#ff8c8c' : '#9bbdf0';
+            ctx.fill();
             ctx.fillStyle = 'white';
             ctx.font = 'bold 22px "Segoe UI"';
-            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(board[r][c].player === HUMAN ? 'P1' : 'PC', x, y);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(player === HUMAN ? 'P1' : 'PC', x, y);
           }
         }
       }
+      ctx.shadowColor = 'transparent';
     }
-    
+
     function drawSelectionHighlight() {
-      if(selectedRow !== -1 && selectedCol !== -1 && currentPlayer === HUMAN) {
-        const x = OFFSET + selectedCol*CELL_SIZE, y = OFFSET + selectedRow*CELL_SIZE;
-        ctx.strokeStyle = '#ffd966'; ctx.lineWidth = 5; ctx.shadowBlur = 20; ctx.shadowColor = '#f0b300';
-        ctx.beginPath(); ctx.arc(x, y, CELL_SIZE*0.43, 0, 2*Math.PI); ctx.stroke();
+      if (selectedRow !== -1 && selectedCol !== -1 && currentPlayer === HUMAN) {
+        const x = OFFSET + selectedCol * CELL_SIZE;
+        const y = OFFSET + selectedRow * CELL_SIZE;
+        ctx.strokeStyle = '#ffd966';
+        ctx.lineWidth = 5;
+        ctx.shadowBlur = 22;
+        ctx.shadowColor = '#f0b300';
+        ctx.beginPath();
+        ctx.arc(x, y, CELL_SIZE*0.43, 0, 2*Math.PI);
+        ctx.stroke();
         ctx.shadowColor = 'transparent';
       }
     }
-    
-    function drawChainHighlight() {
-      if(forcedCaptureChain && chainPieceRow !== -1) {
-        const x = OFFSET + chainPieceCol*CELL_SIZE, y = OFFSET + chainPieceRow*CELL_SIZE;
-        ctx.strokeStyle = '#ff4444'; ctx.lineWidth = 5; ctx.setLineDash([8,8]);
-        ctx.beginPath(); ctx.arc(x, y, CELL_SIZE*0.48, 0, 2*Math.PI); ctx.stroke();
-        ctx.setLineDash([]);
-      }
-    }
-    
+
     function drawValidMoveIndicators() {
-      if(selectedRow === -1) return;
-      for(let move of validMoves) {
-        const x = OFFSET + move.col*CELL_SIZE, y = OFFSET + move.row*CELL_SIZE;
-        ctx.beginPath(); ctx.arc(x, y, CELL_SIZE*0.24, 0, 2*Math.PI);
-        ctx.fillStyle = move.type === 'capture' ? 'rgba(255, 180, 40, 0.95)' : 'rgba(70, 210, 100, 0.9)';
+      if (currentPlayer !== HUMAN) return;
+      for (let move of validMoves) {
+        const x = OFFSET + move.col * CELL_SIZE;
+        const y = OFFSET + move.row * CELL_SIZE;
+        ctx.beginPath();
+        ctx.arc(x, y, CELL_SIZE*0.25, 0, 2*Math.PI);
+        ctx.fillStyle = move.type === 'capture' ? 'rgba(255, 200, 50, 0.95)' : 'rgba(80, 200, 120, 0.85)';
         ctx.fill();
-        ctx.strokeStyle = 'white'; ctx.lineWidth = 2.5; ctx.stroke();
-        if(move.type === 'capture') {
-          ctx.fillStyle = '#8b0000'; ctx.font = 'bold 24px sans-serif'; ctx.fillText('⚔️', x, y);
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2.8;
+        ctx.stroke();
+        if (move.type === 'capture') {
+          ctx.fillStyle = '#8b0000';
+          ctx.font = 'bold 26px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('⚔️', x, y);
         }
       }
     }
-    
-    function updateUI() {
-      drawBoard();
-      document.getElementById('p1Score').innerText = `🔴 ${player1Pieces}`;
-      document.getElementById('p2Score').innerText = `🔵 ${player2Pieces}`;
-      const turnEl = document.getElementById('turnIndicator');
-      const endBtn = document.getElementById('endTurnButton');
-      if(gameOver) {
-        turnEl.innerHTML = winner === HUMAN ? '<span>🏆</span> آپ جیت گئے!' : '<span>💻</span> کمپیوٹر جیت گیا';
-        endBtn.style.display = 'none';
-        document.getElementById('statusMessage').innerHTML = '🎉 گیم ختم۔ نئی گیم شروع کریں';
-      } else {
-        if(currentPlayer === HUMAN) turnEl.innerHTML = '<span>🔴</span> آپ کی باری';
-        else turnEl.innerHTML = '<span>🔵</span> کمپیوٹر کی باری';
-        endBtn.style.display = (currentPlayer === HUMAN && !forcedCaptureChain) ? 'inline-block' : 'none';
-        if(currentPlayer === HUMAN && !computerThinking && !forcedCaptureChain && selectedRow === -1)
-          document.getElementById('statusMessage').innerHTML = '👆 گوٹی منتخب کریں';
-        else if(computerThinking) document.getElementById('statusMessage').innerHTML = '💻 کمپیوٹر سوچ رہا ہے...';
-      }
-    }
-    
+
     function resetGame() {
       initBoard();
-      forcedCaptureChain = false;
-      chainPieceRow = -1;
-      justCaptured = false;
+      clearSelection();
+      hasCapturedThisTurn = false;
+      mandatoryCapturePiece = null;
+      turnActive = false;
       computerThinking = false;
       updateUI();
-      document.getElementById('statusMessage').innerHTML = '🔄 نئی گیم! آپ شروع کریں';
+      document.getElementById('statusMessage').textContent = 'نیا گیم! آپ (سرخ) شروع کریں';
     }
-    
+
     canvas.addEventListener('click', handleCanvasInteraction);
-    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleCanvasInteraction(e); }, { passive: false });
-    canvas.addEventListener('touchend', e => e.preventDefault());
-    canvas.addEventListener('touchmove', e => e.preventDefault());
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      handleCanvasInteraction(e);
+    }, { passive: false });
+    canvas.addEventListener('touchend', (e) => e.preventDefault());
+    canvas.addEventListener('touchmove', (e) => e.preventDefault());
+
     document.getElementById('resetButton').addEventListener('click', resetGame);
-    document.getElementById('endTurnButton').addEventListener('click', manualEndTurn);
-    
+    document.getElementById('endTurnButton').addEventListener('click', endTurnManually);
+
     initBoard();
     drawBoard();
   })();
