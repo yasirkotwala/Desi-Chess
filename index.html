@@ -1,342 +1,304 @@
-
-html
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=0.5">
-  <title>دیسی شطرنج - پنجاب کی مشہور گیم</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Desi Chess · Human (Red) vs Computer (Blue)</title>
   <style>
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
       user-select: none;
-      font-family: 'Segoe UI', 'Noto Nastaliq Urdu', 'Arial', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
+
     body {
-      background: linear-gradient(145deg, #2d5a27 0%, #1e3b1a 100%);
+      background: linear-gradient(145deg, #1a3c2c 0%, #0e2a1d 100%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 8px;
+      font-family: 'Segoe UI', 'Poppins', 'Roboto', system-ui, sans-serif;
       margin: 0;
+      padding: 20px;
     }
+
+    /* main game card */
     .game-container {
-      background: #deb887;
-      background-image: radial-gradient(circle at 20% 20%, #f5deb3, #c4a47a);
-      border-radius: 45px;
-      padding: 18px 18px 12px;
-      box-shadow: 0 30px 45px rgba(0,0,0,0.7), inset 0 2px 10px rgba(255,255,200,0.7);
-      border: 6px solid #5a3e1a;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-width: 850px;
-      width: 96%;
-      margin: auto;
+      background: #d9b382;
+      background-image: radial-gradient(circle at 25% 40%, rgba(255,215,150,0.2) 2%, transparent 2.5%);
+      background-size: 28px 28px;
+      border-radius: 64px 64px 48px 48px;
+      box-shadow: 0 30px 35px rgba(0,0,0,0.5), inset 0 1px 4px rgba(255,255,200,0.8);
+      padding: 20px 25px 30px 25px;
+      transition: all 0.2s;
     }
-    h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      color: #ffd700;
-      text-shadow: 3px 3px 0 #3b2b0f, 5px 5px 0 rgba(0,0,0,0.3);
-      margin-bottom: 6px;
-      letter-spacing: 3px;
-      text-align: center;
-      line-height: 1.3;
-      background: rgba(0,0,0,0.3);
-      padding: 5px 25px;
-      border-radius: 50px;
-      backdrop-filter: blur(3px);
-    }
+
+    /* canvas board */
     canvas {
       display: block;
       margin: 0 auto;
-      border-radius: 35px;
-      background: #faf0d7;
-      box-shadow: inset 0 0 25px rgba(0,0,0,0.5), 0 20px 30px rgba(0,0,0,0.7);
-      border: 5px solid #8b5a2b;
+      border-radius: 28px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+      cursor: pointer;
+      background-color: #eeddbb;
       width: 100%;
       height: auto;
-      max-width: 800px;
-      touch-action: none;
+      max-width: 700px;
+      aspect-ratio: 1 / 1;
     }
+
+    /* info panel */
     .info-panel {
-      width: 100%;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin: 10px 5px 3px;
-      background: #4a3620;
-      border-radius: 50px;
-      padding: 10px 18px;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.5), inset 0 1px 5px #ebc28e;
-      color: #ffecb3;
-      font-weight: bold;
-      font-size: 1.2rem;
-      flex-wrap: wrap;
-      gap: 8px;
-      border: 2px solid #b98b4a;
-    }
-    .player-turn {
-      background: #ffb703;
-      color: #1e2b0c;
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      box-shadow: 0 0 15px #ffaa00;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .score {
-      display: flex;
+      align-items: baseline;
+      background: #2e241fcc;
+      backdrop-filter: blur(8px);
+      margin-bottom: 20px;
+      padding: 12px 25px;
+      border-radius: 60px;
+      color: #f9eed7;
+      text-shadow: 0 2px 3px #1f140e;
       gap: 15px;
-      align-items: center;
+      flex-wrap: wrap;
     }
-    .score span {
-      background: #2f2819;
-      padding: 6px 16px;
-      border-radius: 25px;
-      color: #ffd966;
+
+    .turn-indicator {
+      font-size: 1.7rem;
       font-weight: bold;
-      border: 1px solid #ca9a4a;
-      font-size: 1.1rem;
-    }
-    .btn {
-      background: #d49b3b;
-      border: none;
-      color: #231f1a;
-      font-weight: bold;
-      padding: 8px 20px;
-      border-radius: 30px;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 5px 0 #6b4e1e, 0 6px 12px black;
-      transition: all 0.1s ease;
-      border: 2px solid #ffd58c;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
+      background: #00000055;
+      padding: 5px 20px;
+      border-radius: 40px;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 12px;
     }
-    .btn:active {
-      transform: translateY(3px);
-      box-shadow: 0 2px 0 #5a3e1a, 0 5px 10px black;
-      background: #b87c2c;
+
+    .turn-icon {
+      font-size: 2rem;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
     }
-    .message-area {
-      font-size: 1.1rem;
-      background: #fff3cd;
-      color: #3b2b0f;
-      border-radius: 25px;
-      padding: 6px 16px;
+
+    .score-area {
+      font-size: 1.3rem;
+      background: #1f2a1b;
+      padding: 5px 18px;
+      border-radius: 32px;
       font-weight: bold;
     }
-    .end-turn-btn {
-      background: #e67e22;
-      color: white;
+
+    button {
+      background: #f3c26b;
+      border: none;
+      font-size: 1.2rem;
       font-weight: bold;
-      padding: 8px 22px;
-      border-radius: 30px;
-      font-size: 1.1rem;
+      padding: 8px 28px;
+      border-radius: 40px;
+      color: #2c1a0e;
       cursor: pointer;
-      box-shadow: 0 5px 0 #a0401c, 0 6px 12px black;
-      transition: all 0.1s ease;
-      border: 2px solid #f0a04b;
-      letter-spacing: 1px;
+      transition: 0.2s;
+      box-shadow: 0 4px 0 #8b5a2b;
+      font-family: inherit;
     }
-    .end-turn-btn:active {
-      transform: translateY(3px);
-      box-shadow: 0 2px 0 #7a2e12, 0 5px 10px black;
-      background: #c96a1e;
+
+    button:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #8b5a2b;
     }
-    @media (max-width: 650px) {
-      .info-panel {
-        flex-direction: column;
-        align-items: center;
-      }
-      h1 {
-        font-size: 2.2rem;
-      }
+
+    .message-area {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      background: #1f1a15bb;
+      border-radius: 2rem;
+      padding: 8px 15px;
+      color: #ffefc0;
+      backdrop-filter: blur(4px);
+    }
+
+    @media (max-width: 550px) {
+      .turn-indicator { font-size: 1.1rem; padding: 4px 12px; }
+      .turn-icon { font-size: 1.4rem; }
+      .score-area { font-size: 1rem; }
+      button { font-size: 1rem; padding: 6px 20px; }
+      .info-panel { padding: 8px 16px; }
+    }
+
+    footer {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #ecd9a8;
+      margin-top: 16px;
     }
   </style>
 </head>
 <body>
-<div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+<div>
   <div class="game-container">
-    <h1>✨ دیسی شطرنج ✨</h1>
-    <canvas id="gameCanvas" width="800" height="800" aria-label="دیسی شطرنج بورڈ"></canvas>
     <div class="info-panel">
-      <div class="player-turn" id="turnIndicator">
-        <span>🔴</span> پلیئر 1 کی باری
+      <div class="turn-indicator" id="turnDisplay">
+        <span class="turn-icon" id="turnIcon">🔴</span>
+        <span id="turnText">Human Turn</span>
       </div>
-      <div class="score">
-        <span id="p1Score">🔴 10</span>
-        <span id="p2Score">🔵 10</span>
+      <div class="score-area">
+        🟡 <span id="scoreRed">10</span> &nbsp;|&nbsp; 🔵 <span id="scoreBlue">10</span>
       </div>
-      <button class="btn" id="resetButton"><span>🔄</span> نئی گیم</button>
+      <button id="restartBtn">♻️ New Game</button>
     </div>
-    <div style="display: flex; gap: 12px; align-items: center; margin-top: 6px;">
-      <div class="message-area" id="statusMessage">⚠️ گوٹی منتخب کریں</div>
-      <button class="end-turn-btn" id="endTurnButton" style="display: none;">✅ باری ختم کریں</button>
-    </div>
+
+    <canvas id="chessCanvas" width="700" height="700"></canvas>
+    <div id="gameMessage" class="message-area">👑 Tap a red piece, then click a valid destination</div>
   </div>
-  <div style="color: #ffe3a5; margin-top: 6px; font-weight: bold; text-shadow: 1px 1px 2px black; font-size: 1rem;">
-    دائیں بائیں آگے پیچھے اور کراس میں کاٹیں | مسلسل کٹس ممکن ہیں
-  </div>
+  <footer>⚡ Desi Chess · Red (You) vs Blue (AI) | Move 1 step any direction | Jump capture (optional)</footer>
 </div>
 
 <script>
-  (function() {
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // ----- گیم اسٹیٹ -----
+  (function(){
+    // ---------- DESI CHESS 5x5 ----------
+    // PLAYERS: 1 = HUMAN (RED), 2 = COMPUTER (BLUE)
     const BOARD_SIZE = 5;
-    const TOTAL_PIECES_PER_PLAYER = 10; // ہر پلیئر کے 10 مہرے
-    const CELL_SIZE = canvas.width / (BOARD_SIZE + 0.5);
-    const OFFSET = (canvas.width - CELL_SIZE * (BOARD_SIZE - 1)) / 2;
-
-    let board = [];
-    let currentPlayer = 1;
-    let selectedRow = -1, selectedCol = -1;
-    let gameOver = false;
-    let winner = null;
-    let player1Pieces = TOTAL_PIECES_PER_PLAYER;
-    let player2Pieces = TOTAL_PIECES_PER_PLAYER;
-    let validMoves = [];
+    let board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
     
-    // ملٹی کٹ ٹریکنگ
-    let hasCapturedThisTurn = false;
-    let mandatoryCapturePiece = null;
-    let turnActive = false;
-
-    // ----- بورڈ انیشیئلائز (10 گوٹیاں فی پلیئر) -----
-    function initBoard() {
-      board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
-      
-      // پلیئر 1 (ریڈ) - نیچے دو قطاروں میں 10 گوٹیاں
-      // row 4: 5 گوٹیاں, row 3: 5 گوٹیاں
-      for (let c = 0; c < BOARD_SIZE; c++) {
-        board[4][c] = { player: 1 }; // پوری قطار 4
-        board[3][c] = { player: 1 }; // پوری قطار 3
+    // game state
+    let currentTurn = 1;        // 1: Human, 2: Computer
+    let gameOver = false;
+    let winner = null;           // 'human', 'computer'
+    
+    // UI elements
+    const canvas = document.getElementById('chessCanvas');
+    const ctx = canvas.getContext('2d');
+    const turnTextSpan = document.getElementById('turnText');
+    const turnIconSpan = document.getElementById('turnIcon');
+    const scoreRedSpan = document.getElementById('scoreRed');
+    const scoreBlueSpan = document.getElementById('scoreBlue');
+    const messageDiv = document.getElementById('gameMessage');
+    
+    // interactive selection
+    let selectedRow = null;
+    let selectedCol = null;
+    
+    // piece colors & representation
+    class Piece {
+      constructor(player) {
+        this.player = player;   // 1 = red (human), 2 = blue (computer)
       }
-      
-      // پلیئر 2 (بلیو) - اوپر دو قطاروں میں 10 گوٹیاں
-      // row 0: 5 گوٹیاں, row 1: 5 گوٹیاں
-      for (let c = 0; c < BOARD_SIZE; c++) {
-        board[0][c] = { player: 2 }; // پوری قطار 0
-        board[1][c] = { player: 2 }; // پوری قطار 1
-      }
-      
-      player1Pieces = TOTAL_PIECES_PER_PLAYER;
-      player2Pieces = TOTAL_PIECES_PER_PLAYER;
-      currentPlayer = 1;
-      selectedRow = -1;
-      selectedCol = -1;
-      gameOver = false;
-      winner = null;
-      validMoves = [];
-      hasCapturedThisTurn = false;
-      mandatoryCapturePiece = null;
-      turnActive = false;
-      updatePieceCounts();
-      updateUI();
     }
-
-    // ----- گوٹیوں کی درست گنتی (بورڈ سے شمار) -----
-    function updatePieceCounts() {
-      let p1 = 0, p2 = 0;
-      for (let r = 0; r < BOARD_SIZE; r++) {
-        for (let c = 0; c < BOARD_SIZE; c++) {
-          if (board[r][c]) {
-            if (board[r][c].player === 1) p1++;
-            else if (board[r][c].player === 2) p2++;
+    
+    // ----- helper: count pieces per player -----
+    function countPieces() {
+      let redCount = 0, blueCount = 0;
+      for(let r=0; r<BOARD_SIZE; r++) {
+        for(let c=0; c<BOARD_SIZE; c++) {
+          const p = board[r][c];
+          if(p) {
+            if(p.player === 1) redCount++;
+            else blueCount++;
           }
         }
       }
-      player1Pieces = p1;
-      player2Pieces = p2;
+      return { red: redCount, blue: blueCount };
     }
-
-    // ----- کوآرڈینیٹ سے گرڈ تلاش کریں -----
-    function getGridFromCoord(x, y) {
-      let col = Math.round((x - OFFSET) / CELL_SIZE);
-      let row = Math.round((y - OFFSET) / CELL_SIZE);
-      if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) return null;
-      const cellX = OFFSET + col * CELL_SIZE;
-      const cellY = OFFSET + row * CELL_SIZE;
-      const dist = Math.hypot(x - cellX, y - cellY);
-      if (dist > CELL_SIZE * 0.44) return null;
-      return { row, col };
+    
+    // update score UI
+    function updateScoreUI() {
+      const cnt = countPieces();
+      scoreRedSpan.innerText = cnt.red;
+      scoreBlueSpan.innerText = cnt.blue;
+      if(cnt.red === 0 && !gameOver) {
+        gameOver = true;
+        winner = 'computer';
+        messageDiv.innerText = '💀 BLUE (Computer) wins! Game Over. Press New Game.';
+        turnTextSpan.innerText = 'Game Over';
+      } else if(cnt.blue === 0 && !gameOver) {
+        gameOver = true;
+        winner = 'human';
+        messageDiv.innerText = '🏆 RED (You) wins! Congratulations!';
+        turnTextSpan.innerText = 'Victory!';
+      }
     }
-
-    // ----- کسی گوٹی کے لیے صرف کٹ کی چالیں -----
-    function getCaptureMovesOnly(row, col, player) {
-      const captures = [];
-      const directions = [
-        [-1, -1], [-1, 0], [-1, 1],
-        [0, -1],           [0, 1],
-        [1, -1],  [1, 0],  [1, 1]
-      ];
-
-      for (let [dr, dc] of directions) {
-        const nr = row + dr;
-        const nc = col + dc;
-        if (nr < 0 || nr >= BOARD_SIZE || nc < 0 || nc >= BOARD_SIZE) continue;
-        
-        if (board[nr][nc] && board[nr][nc].player !== player) {
-          const jumpRow = nr + dr;
-          const jumpCol = nc + dc;
-          if (jumpRow >= 0 && jumpRow < BOARD_SIZE && jumpCol >= 0 && jumpCol < BOARD_SIZE) {
-            if (board[jumpRow][jumpCol] === null) {
-              captures.push({ 
-                row: jumpRow, 
-                col: jumpCol, 
-                type: 'capture', 
-                capturedRow: nr, 
-                capturedCol: nc 
-              });
-            }
+    
+    // check if a player has any legal move (any piece can move or capture)
+    function hasAnyLegalMove(player) {
+      for(let r=0; r<BOARD_SIZE; r++) {
+        for(let c=0; c<BOARD_SIZE; c++) {
+          const piece = board[r][c];
+          if(piece && piece.player === player) {
+            const moves = getAllValidMovesForPiece(r, c);
+            if(moves.length > 0) return true;
           }
         }
       }
-      return captures;
+      return false;
     }
-
-    // ----- گوٹی کے لیے تمام ممکنہ چالیں (عام + کٹ) -----
-    function getAllMoves(row, col, player) {
+    
+    // after turn switch, check stalemate / lose condition
+    function checkTurnLoss() {
+      if(gameOver) return true;
+      if(!hasAnyLegalMove(currentTurn)) {
+        gameOver = true;
+        if(currentTurn === 1) {
+          winner = 'computer';
+          messageDiv.innerText = '😵 No moves left for Red! Computer wins.';
+          turnTextSpan.innerText = 'Game Over';
+        } else {
+          winner = 'human';
+          messageDiv.innerText = '🎉 Blue has no moves! Human wins!';
+          turnTextSpan.innerText = 'Game Over';
+        }
+        return true;
+      }
+      return false;
+    }
+    
+    // ---- MOVEMENT & CAPTURE LOGIC (single step + capture jump) ----
+    // All 8 directions: rows offsets, cols offsets
+    const dirs = [
+      [-1,0], [1,0], [0,-1], [0,1],   // orthogonal
+      [-1,-1], [-1,1], [1,-1], [1,1]   // diagonal
+    ];
+    
+    // check if inside board
+    function isValidCell(r,c) {
+      return r>=0 && r<BOARD_SIZE && c>=0 && c<BOARD_SIZE;
+    }
+    
+    // get all possible moves (normal step + capture jumps) for a piece at (r,c)
+    // returns array of objects: {toRow, toCol, captureRow, captureCol, isCapture}
+    // if isCapture true, it means we jump over an opponent piece onto empty cell.
+    function getAllValidMovesForPiece(row, col) {
+      const piece = board[row][col];
+      if(!piece) return [];
+      const player = piece.player;
       const moves = [];
-      const directions = [
-        [-1, -1], [-1, 0], [-1, 1],
-        [0, -1],           [0, 1],
-        [1, -1],  [1, 0],  [1, 1]
-      ];
-
-      for (let [dr, dc] of directions) {
-        const nr = row + dr;
-        const nc = col + dc;
-        if (nr < 0 || nr >= BOARD_SIZE || nc < 0 || nc >= BOARD_SIZE) continue;
-        
-        if (board[nr][nc] === null) {
-          moves.push({ row: nr, col: nc, type: 'move' });
-        } else if (board[nr][nc].player !== player) {
-          const jumpRow = nr + dr;
-          const jumpCol = nc + dc;
-          if (jumpRow >= 0 && jumpRow < BOARD_SIZE && jumpCol >= 0 && jumpCol < BOARD_SIZE) {
-            if (board[jumpRow][jumpCol] === null) {
-              moves.push({ 
-                row: jumpRow, 
-                col: jumpCol, 
-                type: 'capture', 
-                capturedRow: nr, 
-                capturedCol: nc 
+      
+      for(const [dr, dc] of dirs) {
+        const newR = row + dr;
+        const newC = col + dc;
+        if(isValidCell(newR, newC)) {
+          const target = board[newR][newC];
+          // normal move: empty cell
+          if(target === null) {
+            moves.push({
+              toRow: newR,
+              toCol: newC,
+              captureRow: null,
+              captureCol: null,
+              isCapture: false
+            });
+          } 
+          // capture move: if target has opponent piece and next cell beyond is empty
+          else if(target.player !== player) {
+            const jumpR = newR + dr;
+            const jumpC = newC + dc;
+            if(isValidCell(jumpR, jumpC) && board[jumpR][jumpC] === null) {
+              moves.push({
+                toRow: jumpR,
+                toCol: jumpC,
+                captureRow: newR,
+                captureCol: newC,
+                isCapture: true
               });
             }
           }
@@ -344,440 +306,481 @@ html
       }
       return moves;
     }
-
-    // چیک کریں کہ کسی پلیئر کی کوئی گوٹی کٹ کر سکتی ہے؟
-    function playerHasAnyCapture(player) {
-      for (let r = 0; r < BOARD_SIZE; r++) {
-        for (let c = 0; c < BOARD_SIZE; c++) {
-          if (board[r][c] && board[r][c].player === player) {
-            if (getCaptureMovesOnly(r, c, player).length > 0) return true;
-          }
-        }
+    
+    // execute a move (normal or capture)
+    // returns {success, multiCaptureAvailable, nextPiecePos}
+    function applyMove(row, col, move, isSimulation = false) {
+      const piece = board[row][col];
+      if(!piece) return { success: false };
+      
+      const { toRow, toCol, captureRow, captureCol, isCapture } = move;
+      
+      // validate target empty (should be already validated)
+      if(board[toRow][toCol] !== null) return { success: false };
+      
+      // store captured piece if any
+      let capturedPiece = null;
+      if(isCapture && captureRow !== null && captureCol !== null) {
+        capturedPiece = board[captureRow][captureCol];
+        if(!capturedPiece || capturedPiece.player === piece.player) return { success: false };
       }
-      return false;
+      
+      // apply move (real or simulation)
+      if(!isSimulation) {
+        // actual board update
+        if(isCapture && capturedPiece) {
+          board[captureRow][captureCol] = null;
+        }
+        board[toRow][toCol] = piece;
+        board[row][col] = null;
+      } else {
+        // simulation: we do changes on a deep copy? but we use temporary swap inside AI; we handle separately.
+        // for simulation we return just move data. but here we implement generic but not used in sim later.
+        // we'll handle AI with temporary clone for evaluation, but this applyMove used for real.
+      }
+      
+      // check for additional captures from the new position (only in real game, not simulation for AI turn-based)
+      let extraCaptures = [];
+      if(!isSimulation) {
+        const newPosMoves = getAllValidMovesForPiece(toRow, toCol);
+        extraCaptures = newPosMoves.filter(m => m.isCapture === true);
+      }
+      
+      return {
+        success: true,
+        multiCaptureAvailable: extraCaptures.length > 0,
+        nextRow: toRow,
+        nextCol: toCol,
+        extraMoves: extraCaptures
+      };
     }
-
-    // ----- گوٹی منتخب کریں -----
-    function selectPiece(row, col) {
-      if (gameOver) return;
+    
+    // execute full move with possible multi-capture chain (optional stop after first capture)
+    // Human: after a capture we allow to stop OR continue. but we handle via selection flow.
+    // For simplicity: after each capture move in human turn, we refresh board and if extra captures exist we ask to continue or finish.
+    // we implement that in human interaction.
+    
+    // MAIN EXECUTOR for any move (handles turn switching unless multi-capture ongoing)
+    // Returns true if move executed successfully and turn should possibly change (or multiCapture chain continues)
+    let waitingForMultiCapture = false;
+    let multiCapturePiecePos = { row: null, col: null };
+    
+    function commitMove(row, col, move, isComputerTrigger = false) {
+      if(gameOver) return false;
+      const piece = board[row][col];
+      if(!piece || piece.player !== currentTurn) return false;
       
-      if (mandatoryCapturePiece) {
-        if (row !== mandatoryCapturePiece.row || col !== mandatoryCapturePiece.col) {
-          document.getElementById('statusMessage').textContent = '⚠️ آپ کو اس گوٹی سے کٹ جاری رکھنا ہے!';
-          return;
-        }
+      const { toRow, toCol, captureRow, captureCol, isCapture } = move;
+      // validation again
+      if(board[toRow][toCol] !== null) return false;
+      if(isCapture) {
+        if(captureRow===null || captureCol===null) return false;
+        const targetPiece = board[captureRow][captureCol];
+        if(!targetPiece || targetPiece.player === piece.player) return false;
+        const jumpOverOk = (Math.abs(captureRow-row)<=1 && Math.abs(captureCol-col)<=1);
+        if(!jumpOverOk) return false;
       }
       
-      if (board[row][col] && board[row][col].player === currentPlayer) {
-        selectedRow = row;
-        selectedCol = col;
-        
-        if (mandatoryCapturePiece) {
-          validMoves = getCaptureMovesOnly(row, col, currentPlayer);
+      // execute move
+      if(isCapture) {
+        board[captureRow][captureCol] = null;
+      }
+      board[toRow][toCol] = piece;
+      board[row][col] = null;
+      
+      // re-render board
+      drawBoard();
+      
+      // check win after move
+      updateScoreUI();
+      if(gameOver) return true;
+      
+      // check extra captures from new position
+      const extraMoves = getAllValidMovesForPiece(toRow, toCol).filter(m => m.isCapture === true);
+      
+      if(extraMoves.length > 0 && isCapture) {
+        // multi-capture opportunity
+        waitingForMultiCapture = true;
+        multiCapturePiecePos = { row: toRow, col: toCol };
+        if(currentTurn === 1) {
+          messageDiv.innerText = `✨ Red can capture again! Click same piece to continue, or click elsewhere to end turn.`;
+          // selection should allow same piece to continue or deselect to end turn
+          selectedRow = toRow;
+          selectedCol = toCol;
+          drawBoard(true, toRow, toCol);
         } else {
-          if (!hasCapturedThisTurn && playerHasAnyCapture(currentPlayer)) {
-            validMoves = getCaptureMovesOnly(row, col, currentPlayer);
-            if (validMoves.length === 0) {
-              document.getElementById('statusMessage').textContent = '⚠️ کٹ لازمی ہے، اس گوٹی سے کٹ ممکن نہیں';
-              clearSelection();
-              updateUI();
-              return;
-            }
-          } else {
-            validMoves = getAllMoves(row, col, currentPlayer);
+          // computer multi-capture decision: always continue capturing if beneficial? Our AI will handle in computerMove.
+          // we will re-call computer move if extra captures exist and it's computer turn.
+          if(currentTurn === 2) {
+            // AI will handle next capture chain inside computerMove using while loop.
+            // We'll set a flag for AI to continue capturing from same piece.
+            setTimeout(() => {
+              if(currentTurn === 2 && !gameOver) {
+                computerMoveWithMulti(toRow, toCol);
+              }
+            }, 80);
           }
         }
-        
-        updateUI();
-        document.getElementById('statusMessage').textContent = '✅ منزل کا انتخاب کریں';
+        return true; // turn not switched yet because multi-capture active
       } else {
-        clearSelection();
-        updateUI();
-        document.getElementById('statusMessage').textContent = '❌ اپنی گوٹی چنیں';
-      }
-    }
-
-    function clearSelection() {
-      selectedRow = -1;
-      selectedCol = -1;
-      validMoves = [];
-    }
-
-    // ----- چال چلیں -----
-    function makeMove(targetRow, targetCol) {
-      if (gameOver || selectedRow === -1 || selectedCol === -1) return false;
-
-      const move = validMoves.find(m => m.row === targetRow && m.col === targetCol);
-      if (!move) {
-        document.getElementById('statusMessage').textContent = '⛔ غلط چال';
-        return false;
-      }
-
-      const piece = board[selectedRow][selectedCol];
-      board[selectedRow][selectedCol] = null;
-      board[targetRow][targetCol] = piece;
-      const newRow = targetRow;
-      const newCol = targetCol;
-
-      let capturedThisMove = false;
-      
-      if (move.type === 'capture') {
-        board[move.capturedRow][move.capturedCol] = null;
-        hasCapturedThisTurn = true;
-        capturedThisMove = true;
-        turnActive = true;
-      }
-
-      updatePieceCounts();
-
-      // جیت/ہار چیک
-      if (player1Pieces === 0) {
-        gameOver = true;
-        winner = 2;
-        clearSelection();
-        mandatoryCapturePiece = null;
-        turnActive = false;
-        updateUI();
-        return true;
-      } else if (player2Pieces === 0) {
-        gameOver = true;
-        winner = 1;
-        clearSelection();
-        mandatoryCapturePiece = null;
-        turnActive = false;
-        updateUI();
+        // no extra capture: end turn
+        waitingForMultiCapture = false;
+        multiCapturePiecePos = { row: null, col: null };
+        switchTurn();
         return true;
       }
-
-      // اگر کٹ کیا ہے تو مزید کٹ چیک کریں
-      if (capturedThisMove) {
-        const furtherCaptures = getCaptureMovesOnly(newRow, newCol, currentPlayer);
-        if (furtherCaptures.length > 0) {
-          mandatoryCapturePiece = { row: newRow, col: newCol };
-          selectedRow = newRow;
-          selectedCol = newCol;
-          validMoves = furtherCaptures;
-          updateUI();
-          document.getElementById('statusMessage').textContent = '⚔️ مزید کٹ کریں یا باری ختم کریں';
-          return true;
-        }
-      }
-
-      endCurrentTurn();
-      return true;
     }
-
-    // ----- باری ختم کریں -----
-    function endCurrentTurn() {
-      clearSelection();
-      mandatoryCapturePiece = null;
-      hasCapturedThisTurn = false;
-      turnActive = false;
+    
+    // switch turn after move or after multi-capture ends
+    function switchTurn() {
+      if(gameOver) return;
+      currentTurn = (currentTurn === 1) ? 2 : 1;
+      updateUITurn();
+      drawBoard();
+      selectedRow = null;
+      selectedCol = null;
       
-      const opponent = currentPlayer === 1 ? 2 : 1;
-      
-      let opponentHasMoves = false;
-      for (let r = 0; r < BOARD_SIZE; r++) {
-        for (let c = 0; c < BOARD_SIZE; c++) {
-          if (board[r][c] && board[r][c].player === opponent) {
-            if (getAllMoves(r, c, opponent).length > 0) {
-              opponentHasMoves = true;
-              break;
-            }
-          }
-        }
-        if (opponentHasMoves) break;
-      }
-      
-      if (!opponentHasMoves) {
-        gameOver = true;
-        winner = currentPlayer;
-      } else {
-        currentPlayer = opponent;
-      }
-      
-      updateUI();
-    }
-
-    // ----- باری ختم کرنے کا بٹن -----
-    function endTurnManually() {
-      if (gameOver || !turnActive) return;
-      if (mandatoryCapturePiece) {
-        const furtherCaptures = getCaptureMovesOnly(mandatoryCapturePiece.row, mandatoryCapturePiece.col, currentPlayer);
-        if (furtherCaptures.length > 0) {
-          document.getElementById('statusMessage').textContent = '⚠️ مزید کٹ ممکن ہے، پہلے کٹ کریں';
-          return;
-        }
-      }
-      endCurrentTurn();
-    }
-
-    // ----- کینوس کلک/ٹچ ہینڈلر -----
-    function handleCanvasInteraction(e) {
-      e.preventDefault();
-      if (gameOver) {
-        document.getElementById('statusMessage').textContent = '🏆 گیم ختم! نیا گیم شروع کریں';
+      // after switching, check if current player has moves
+      if(checkTurnLoss()) {
+        drawBoard();
         return;
       }
-
+      
+      // if computer turn, invoke AI
+      if(currentTurn === 2 && !gameOver) {
+        messageDiv.innerText = '🤖 Computer is thinking ...';
+        setTimeout(() => { computerTurn(); }, 80);
+      } else if(currentTurn === 1 && !gameOver) {
+        messageDiv.innerText = '🔴 Your turn! Tap a red piece.';
+      }
+    }
+    
+    function updateUITurn() {
+      if(gameOver) return;
+      if(currentTurn === 1) {
+        turnTextSpan.innerText = 'Human Turn';
+        turnIconSpan.innerText = '🔴';
+      } else {
+        turnTextSpan.innerText = 'Computer Turn';
+        turnIconSpan.innerText = '🔵';
+      }
+    }
+    
+    // *************** COMPUTER AI (smart but not mandatory capture) ***************
+    // AI evaluates captures with priority, but also avoids moves that immediately cause self-capture? Uses scoring.
+    // For simplicity but decent: prioritize any capture, else choose move that controls center or random.
+    
+    function getAllPossibleMovesForPlayer(player) {
+      let movesList = [];
+      for(let r=0; r<BOARD_SIZE; r++) {
+        for(let c=0; c<BOARD_SIZE; c++) {
+          const p = board[r][c];
+          if(p && p.player === player) {
+            const moves = getAllValidMovesForPiece(r, c);
+            for(const mv of moves) {
+              movesList.push({ fromRow: r, fromCol: c, move: mv });
+            }
+          }
+        }
+      }
+      return movesList;
+    }
+    
+    // Evaluation for computer move (prefer captures, then center control)
+    function scoreMoveForAI(fromRow, fromCol, move, boardStateSnapshot) {
+      // we use simple heuristic: capture = +100, else distance to center = bonus
+      if(move.isCapture) return 150;
+      // center preference: middle is (2,2)
+      const centerDist = Math.abs(move.toRow - 2) + Math.abs(move.toCol - 2);
+      return 20 - centerDist * 2;
+    }
+    
+    function computerTurn() {
+      if(gameOver || currentTurn !== 2) return;
+      // check if any extra capture chain pending (multiCapturePiecePos)
+      if(waitingForMultiCapture && multiCapturePiecePos.row !== null) {
+        computerMoveWithMulti(multiCapturePiecePos.row, multiCapturePiecePos.col);
+        return;
+      }
+      // normal turn: gather all moves
+      let allMoves = [];
+      for(let r=0; r<BOARD_SIZE; r++) {
+        for(let c=0; c<BOARD_SIZE; c++) {
+          if(board[r][c] && board[r][c].player === 2) {
+            const moves = getAllValidMovesForPiece(r, c);
+            for(const mv of moves) {
+              allMoves.push({ fromRow: r, fromCol: c, move: mv });
+            }
+          }
+        }
+      }
+      if(allMoves.length === 0) {
+        // no moves for computer
+        if(checkTurnLoss()) drawBoard();
+        return;
+      }
+      // Choose best move based on scoring + random tie
+      let bestMoves = [];
+      let bestScore = -Infinity;
+      for(const candidate of allMoves) {
+        let sc = scoreMoveForAI(candidate.fromRow, candidate.fromCol, candidate.move, null);
+        if(candidate.move.isCapture) sc += 300;
+        if(sc > bestScore) {
+          bestScore = sc;
+          bestMoves = [candidate];
+        } else if(Math.abs(sc - bestScore) < 0.1) {
+          bestMoves.push(candidate);
+        }
+      }
+      const chosen = bestMoves.length ? bestMoves[Math.floor(Math.random() * bestMoves.length)] : allMoves[0];
+      if(!chosen) return;
+      
+      // execute move
+      const { fromRow, fromCol, move } = chosen;
+      const piece = board[fromRow][fromCol];
+      if(!piece || piece.player !== 2) return;
+      
+      // commit move for computer
+      const isCaptureMove = move.isCapture;
+      if(move.isCapture) {
+        const captureRow = move.captureRow, captureCol = move.captureCol;
+        if(captureRow !== null && board[captureRow][captureCol] && board[captureRow][captureCol].player === 1) {
+          board[captureRow][captureCol] = null;
+        }
+      }
+      board[move.toRow][move.toCol] = piece;
+      board[fromRow][fromCol] = null;
+      
+      drawBoard();
+      updateScoreUI();
+      if(gameOver) return;
+      
+      // check extra captures from new position
+      const extraCap = getAllValidMovesForPiece(move.toRow, move.toCol).filter(m => m.isCapture === true);
+      if(extraCap.length > 0 && isCaptureMove) {
+        waitingForMultiCapture = true;
+        multiCapturePiecePos = { row: move.toRow, col: move.toCol };
+        // continue AI chain for extra capture
+        setTimeout(() => { computerMoveWithMulti(move.toRow, move.toCol); }, 100);
+        return;
+      } else {
+        waitingForMultiCapture = false;
+        multiCapturePiecePos = { row: null, col: null };
+        switchTurn();
+      }
+    }
+    
+    function computerMoveWithMulti(row, col) {
+      if(gameOver || currentTurn !== 2) return;
+      const piece = board[row][col];
+      if(!piece || piece.player !== 2) {
+        waitingForMultiCapture = false;
+        switchTurn();
+        return;
+      }
+      const extraMoves = getAllValidMovesForPiece(row, col).filter(m => m.isCapture === true);
+      if(extraMoves.length === 0) {
+        waitingForMultiCapture = false;
+        multiCapturePiecePos = { row: null, col: null };
+        switchTurn();
+        return;
+      }
+      // choose best capture (any capture is good)
+      const chosenCapture = extraMoves[Math.floor(Math.random() * extraMoves.length)];
+      // apply
+      if(chosenCapture.captureRow !== null) {
+        board[chosenCapture.captureRow][chosenCapture.captureCol] = null;
+      }
+      board[chosenCapture.toRow][chosenCapture.toCol] = piece;
+      board[row][col] = null;
+      drawBoard();
+      updateScoreUI();
+      if(gameOver) return;
+      
+      const further = getAllValidMovesForPiece(chosenCapture.toRow, chosenCapture.toCol).filter(m => m.isCapture === true);
+      if(further.length > 0) {
+        multiCapturePiecePos = { row: chosenCapture.toRow, col: chosenCapture.toCol };
+        setTimeout(() => { computerMoveWithMulti(chosenCapture.toRow, chosenCapture.toCol); }, 80);
+      } else {
+        waitingForMultiCapture = false;
+        multiCapturePiecePos = { row: null, col: null };
+        switchTurn();
+      }
+    }
+    
+    // ----- HUMAN INTERACTION -----
+    function handleCanvasClick(e) {
+      if(gameOver) {
+        messageDiv.innerText = 'Game over. Press "New Game" to play again.';
+        return;
+      }
+      if(currentTurn !== 1) {
+        messageDiv.innerText = '🤖 Computer is thinking ... wait';
+        return;
+      }
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width;
       const scaleY = canvas.height / rect.height;
-
-      let clientX, clientY;
-      if (e.touches) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
+      let mouseX = (e.clientX - rect.left) * scaleX;
+      let mouseY = (e.clientY - rect.top) * scaleY;
+      const cellW = canvas.width / BOARD_SIZE;
+      const cellH = canvas.height / BOARD_SIZE;
+      const col = Math.floor(mouseX / cellW);
+      const row = Math.floor(mouseY / cellH);
+      if(row<0 || row>=BOARD_SIZE || col<0 || col>=BOARD_SIZE) return;
+      
+      // if waiting for multi-capture: only the active piece can be used to continue or clicking elsewhere ends turn
+      if(waitingForMultiCapture && multiCapturePiecePos.row !== null && multiCapturePiecePos.col !== null) {
+        const activeRow = multiCapturePiecePos.row, activeCol = multiCapturePiecePos.col;
+        if(row === activeRow && col === activeCol) {
+          // try to continue capture from this piece
+          const extra = getAllValidMovesForPiece(activeRow, activeCol).filter(m => m.isCapture === true);
+          if(extra.length === 0) {
+            waitingForMultiCapture = false;
+            multiCapturePiecePos = { row: null, col: null };
+            switchTurn();
+            drawBoard();
+            return;
+          }
+          selectedRow = activeRow;
+          selectedCol = activeCol;
+          drawBoard(true, activeRow, activeCol);
+          messageDiv.innerText = 'Select a capture destination (⭐ jump over blue)';
+          return;
+        } else {
+          // end multi-capture phase voluntarily
+          waitingForMultiCapture = false;
+          multiCapturePiecePos = { row: null, col: null };
+          selectedRow = null;
+          switchTurn();
+          drawBoard();
+          return;
+        }
       }
-
-      const canvasX = (clientX - rect.left) * scaleX;
-      const canvasY = (clientY - rect.top) * scaleY;
-
-      const gridPos = getGridFromCoord(canvasX, canvasY);
-      if (!gridPos) {
-        if (selectedRow !== -1 && !mandatoryCapturePiece) {
-          clearSelection();
-          updateUI();
-          document.getElementById('statusMessage').textContent = 'اپنی گوٹی چنیں';
+      
+      // normal selection or move
+      if(selectedRow === null) {
+        const piece = board[row][col];
+        if(piece && piece.player === 1) {
+          selectedRow = row;
+          selectedCol = col;
+          drawBoard(true, row, col);
+          messageDiv.innerText = '🔴 Piece selected → click on a valid square.';
+        } else {
+          messageDiv.innerText = '❌ Select your red piece first.';
         }
         return;
-      }
-
-      const { row, col } = gridPos;
-
-      if (selectedRow !== -1 && selectedCol !== -1) {
-        const success = makeMove(row, col);
-        if (!success) {
-          if (board[row][col] && board[row][col].player === currentPlayer) {
-            if (!mandatoryCapturePiece || (mandatoryCapturePiece.row === row && mandatoryCapturePiece.col === col)) {
-              selectPiece(row, col);
+      } else {
+        // try to move selected piece to (row,col)
+        const moves = getAllValidMovesForPiece(selectedRow, selectedCol);
+        const targetMove = moves.find(m => m.toRow === row && m.toCol === col);
+        if(targetMove) {
+          // execute human move
+          const success = commitMove(selectedRow, selectedCol, targetMove);
+          if(success) {
+            selectedRow = null;
+            drawBoard();
+            if(!waitingForMultiCapture) {
+              // after commit turn already may have switched if no multi
+            } else {
+              // multi-capture ongoing, keep selection on new piece?
+              if(multiCapturePiecePos.row !== null) {
+                selectedRow = multiCapturePiecePos.row;
+                selectedCol = multiCapturePiecePos.col;
+                drawBoard(true, selectedRow, selectedCol);
+                messageDiv.innerText = '✨ Extra capture! Tap the same piece to continue capturing, or tap elsewhere to end turn.';
+              } else {
+                selectedRow = null;
+              }
             }
           } else {
-            if (!mandatoryCapturePiece) {
-              clearSelection();
-            }
-            updateUI();
-            document.getElementById('statusMessage').textContent = '⛔ غلط جگہ';
+            messageDiv.innerText = 'Invalid move.';
           }
-        }
-      } else {
-        if (board[row][col] && board[row][col].player === currentPlayer) {
-          selectPiece(row, col);
         } else {
-          document.getElementById('statusMessage').textContent = '🔴🔵 اپنی گوٹی پر کلک کریں';
+          messageDiv.innerText = 'Not a valid move (must be one step or jump capture).';
+          selectedRow = null;
+          drawBoard();
         }
       }
     }
-
-    // ----- UI اپ ڈیٹ -----
-    function updateUI() {
+    
+    // ---------- INITIAL BOARD ----------
+    function initGame() {
+      board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
+      // Place red (player=1) in rows 3 & 4 (indexes)
+      for(let c=0; c<BOARD_SIZE; c++) {
+        board[3][c] = new Piece(1);   // red
+        board[4][c] = new Piece(1);
+      }
+      // Blue (player=2) rows 0 and 1
+      for(let c=0; c<BOARD_SIZE; c++) {
+        board[0][c] = new Piece(2);
+        board[1][c] = new Piece(2);
+      }
+      currentTurn = 1;
+      gameOver = false;
+      winner = null;
+      waitingForMultiCapture = false;
+      multiCapturePiecePos = { row: null, col: null };
+      selectedRow = null;
+      selectedCol = null;
+      updateScoreUI();
+      updateUITurn();
       drawBoard();
-      document.getElementById('p1Score').textContent = `🔴 ${player1Pieces}`;
-      document.getElementById('p2Score').textContent = `🔵 ${player2Pieces}`;
-
-      const turnEl = document.getElementById('turnIndicator');
-      const endTurnBtn = document.getElementById('endTurnButton');
-      
-      if (gameOver) {
-        if (winner === 1) turnEl.innerHTML = '<span>🏆</span> پلیئر 1 جیت گیا!';
-        else if (winner === 2) turnEl.innerHTML = '<span>🏆</span> پلیئر 2 جیت گیا!';
-        document.getElementById('statusMessage').textContent = '🎉 مبارک ہو! نیا گیم شروع کریں';
-        endTurnBtn.style.display = 'none';
-      } else {
-        turnEl.innerHTML = currentPlayer === 1 ? '<span>🔴</span> پلیئر 1 کی باری' : '<span>🔵</span> پلیئر 2 کی باری';
-        
-        if (turnActive && mandatoryCapturePiece) {
-          endTurnBtn.style.display = 'inline-block';
-        } else if (turnActive && !mandatoryCapturePiece) {
-          endTurnBtn.style.display = 'inline-block';
-        } else {
-          endTurnBtn.style.display = 'none';
-        }
-        
-        if (selectedRow === -1 && !turnActive) {
-          document.getElementById('statusMessage').textContent = '👆 گوٹی منتخب کریں';
-        }
-      }
+      messageDiv.innerText = '🔴 Human starts! Tap a red piece.';
+      if(checkTurnLoss()) drawBoard();
     }
-
-    // ----- بورڈ ڈرائنگ -----
-    function drawBoard() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawGridAndSquares();
-      drawPieces();
-      drawSelectionHighlight();
-      drawValidMoveIndicators();
-      if (mandatoryCapturePiece) {
-        drawMandatoryPieceHighlight();
-      }
-    }
-
-    function drawMandatoryPieceHighlight() {
-      if (!mandatoryCapturePiece) return;
-      const x = OFFSET + mandatoryCapturePiece.col * CELL_SIZE;
-      const y = OFFSET + mandatoryCapturePiece.row * CELL_SIZE;
-      ctx.strokeStyle = '#ff4444';
-      ctx.lineWidth = 5;
-      ctx.shadowBlur = 25;
-      ctx.shadowColor = '#ff0000';
-      ctx.setLineDash([10, 5]);
-      ctx.beginPath();
-      ctx.arc(x, y, CELL_SIZE*0.44, 0, 2*Math.PI);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.shadowColor = 'transparent';
-    }
-
-    function drawGridAndSquares() {
-      ctx.strokeStyle = '#4a2c0f';
-      ctx.lineWidth = 4.5;
-      ctx.shadowColor = '#aa8b65';
-      ctx.shadowBlur = 4;
-
-      for (let i = 0; i < BOARD_SIZE; i++) {
-        const x = OFFSET + i * CELL_SIZE;
-        const y = OFFSET + i * CELL_SIZE;
-        ctx.beginPath();
-        ctx.moveTo(OFFSET, y);
-        ctx.lineTo(OFFSET + (BOARD_SIZE-1) * CELL_SIZE, y);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(x, OFFSET);
-        ctx.lineTo(x, OFFSET + (BOARD_SIZE-1) * CELL_SIZE);
-        ctx.stroke();
-      }
-
-      ctx.strokeStyle = '#7b5e3b';
-      ctx.lineWidth = 2.8;
-      for (let r = 0; r < BOARD_SIZE-1; r++) {
-        for (let c = 0; c < BOARD_SIZE-1; c++) {
-          const x1 = OFFSET + c * CELL_SIZE;
-          const y1 = OFFSET + r * CELL_SIZE;
-          const x2 = OFFSET + (c+1) * CELL_SIZE;
-          const y2 = OFFSET + (r+1) * CELL_SIZE;
-          ctx.beginPath();
-          ctx.moveTo(x1, y1);
-          ctx.lineTo(x2, y2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(x2, y1);
-          ctx.lineTo(x1, y2);
-          ctx.stroke();
-        }
-      }
-      ctx.shadowColor = 'transparent';
-      ctx.shadowBlur = 0;
-      
-      ctx.fillStyle = '#3b280b';
-      for (let r = 0; r < BOARD_SIZE; r++) {
-        for (let c = 0; c < BOARD_SIZE; c++) {
-          ctx.beginPath();
-          ctx.arc(OFFSET + c * CELL_SIZE, OFFSET + r * CELL_SIZE, 7, 0, 2*Math.PI);
-          ctx.fill();
-        }
-      }
-    }
-
-    function drawPieces() {
-      for (let r = 0; r < BOARD_SIZE; r++) {
-        for (let c = 0; c < BOARD_SIZE; c++) {
-          if (board[r][c]) {
-            const x = OFFSET + c * CELL_SIZE;
-            const y = OFFSET + r * CELL_SIZE;
-            const player = board[r][c].player;
-            
-            ctx.shadowColor = '#333';
-            ctx.shadowBlur = 12;
-            ctx.beginPath();
-            ctx.arc(x, y, CELL_SIZE*0.35, 0, 2*Math.PI);
-            ctx.fillStyle = player === 1 ? '#c42e2e' : '#2e5cb8';
-            ctx.fill();
-            ctx.shadowBlur = 4;
-            ctx.strokeStyle = '#f9e076';
-            ctx.lineWidth = 3.5;
-            ctx.stroke();
-            
+    
+    // ----- DRAWING BOARD WITH STYLE -----
+    function drawBoard(highlightSelected=false, selRow=null, selCol=null) {
+      const w = canvas.width, h = canvas.height;
+      const cellW = w/BOARD_SIZE, cellH = h/BOARD_SIZE;
+      for(let i=0;i<BOARD_SIZE;i++) {
+        for(let j=0;j<BOARD_SIZE;j++) {
+          let x = j*cellW, y = i*cellH;
+          let isDark = (i+j)%2 === 0;
+          ctx.fillStyle = isDark ? '#e7c48b' : '#c8a46b';
+          ctx.fillRect(x, y, cellW, cellH);
+          ctx.strokeStyle = '#aa7e54';
+          ctx.strokeRect(x, y, cellW, cellH);
+          if(highlightSelected && selRow===i && selCol===j) {
+            ctx.save();
             ctx.shadowBlur = 0;
+            ctx.fillStyle = '#ffe68faa';
+            ctx.fillRect(x, y, cellW, cellH);
+            ctx.restore();
+          }
+          const piece = board[i][j];
+          if(piece) {
+            const grad = ctx.createRadialGradient(x+cellW*0.3, y+cellH*0.3, 5, x+cellW*0.5, y+cellH*0.5, cellW*0.35);
+            if(piece.player === 1) {
+              grad.addColorStop(0, '#e33c2c');
+              grad.addColorStop(1, '#a51f12');
+              ctx.fillStyle = grad;
+            } else {
+              grad.addColorStop(0, '#3a86ff');
+              grad.addColorStop(1, '#1045a0');
+              ctx.fillStyle = grad;
+            }
             ctx.beginPath();
-            ctx.arc(x-2, y-2, CELL_SIZE*0.2, 0, 2*Math.PI);
-            ctx.fillStyle = player === 1 ? '#ff8c8c' : '#9bbdf0';
+            ctx.arc(x+cellW/2, y+cellH/2, cellW*0.32, 0, 2*Math.PI);
             ctx.fill();
             ctx.fillStyle = 'white';
-            ctx.font = 'bold 22px "Segoe UI"';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(player === 1 ? 'P1' : 'P2', x, y);
+            ctx.font = `bold ${Math.floor(cellW*0.3)}px "Segoe UI"`;
+            ctx.shadowBlur = 2;
+            ctx.fillText(piece.player===1?'🔴':'🔵', x+cellW*0.34, y+cellH*0.68);
+            ctx.shadowBlur = 0;
           }
         }
       }
-      ctx.shadowColor = 'transparent';
     }
-
-    function drawSelectionHighlight() {
-      if (selectedRow !== -1 && selectedCol !== -1) {
-        const x = OFFSET + selectedCol * CELL_SIZE;
-        const y = OFFSET + selectedRow * CELL_SIZE;
-        ctx.strokeStyle = '#ffd966';
-        ctx.lineWidth = 5;
-        ctx.shadowBlur = 22;
-        ctx.shadowColor = '#f0b300';
-        ctx.beginPath();
-        ctx.arc(x, y, CELL_SIZE*0.43, 0, 2*Math.PI);
-        ctx.stroke();
-        ctx.shadowColor = 'transparent';
-      }
-    }
-
-    function drawValidMoveIndicators() {
-      for (let move of validMoves) {
-        const x = OFFSET + move.col * CELL_SIZE;
-        const y = OFFSET + move.row * CELL_SIZE;
-        ctx.beginPath();
-        ctx.arc(x, y, CELL_SIZE*0.25, 0, 2*Math.PI);
-        ctx.fillStyle = move.type === 'capture' ? 'rgba(255, 200, 50, 0.95)' : 'rgba(80, 200, 120, 0.85)';
-        ctx.fill();
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2.8;
-        ctx.stroke();
-        if (move.type === 'capture') {
-          ctx.fillStyle = '#8b0000';
-          ctx.font = 'bold 26px sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('⚔️', x, y);
-        }
-      }
-    }
-
-    // ----- ری سیٹ -----
-    function resetGame() {
-      initBoard();
-      clearSelection();
-      hasCapturedThisTurn = false;
-      mandatoryCapturePiece = null;
-      turnActive = false;
-      updateUI();
-      document.getElementById('statusMessage').textContent = 'نیا گیم! پلیئر 1 شروع کرے';
-    }
-
-    // ----- ایونٹ لسٹنرز -----
-    canvas.addEventListener('click', handleCanvasInteraction);
-    canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      handleCanvasInteraction(e);
-    }, { passive: false });
-    canvas.addEventListener('touchend', (e) => e.preventDefault());
-    canvas.addEventListener('touchmove', (e) => e.preventDefault());
-
-    document.getElementById('resetButton').addEventListener('click', resetGame);
-    document.getElementById('endTurnButton').addEventListener('click', endTurnManually);
-
-    // شروع کریں
-    initBoard();
-    drawBoard();
+    
+    canvas.addEventListener('click', handleCanvasClick);
+    document.getElementById('restartBtn').addEventListener('click', () => {
+      initGame();
+    });
+    
+    initGame();
   })();
 </script>
 </body>
