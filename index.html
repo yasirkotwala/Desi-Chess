@@ -1,0 +1,784 @@
+
+html
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=0.5">
+  <title>دیسی شطرنج - پنجاب کی مشہور گیم</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: 'Segoe UI', 'Noto Nastaliq Urdu', 'Arial', sans-serif;
+    }
+    body {
+      background: linear-gradient(145deg, #2d5a27 0%, #1e3b1a 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      margin: 0;
+    }
+    .game-container {
+      background: #deb887;
+      background-image: radial-gradient(circle at 20% 20%, #f5deb3, #c4a47a);
+      border-radius: 45px;
+      padding: 18px 18px 12px;
+      box-shadow: 0 30px 45px rgba(0,0,0,0.7), inset 0 2px 10px rgba(255,255,200,0.7);
+      border: 6px solid #5a3e1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 850px;
+      width: 96%;
+      margin: auto;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #ffd700;
+      text-shadow: 3px 3px 0 #3b2b0f, 5px 5px 0 rgba(0,0,0,0.3);
+      margin-bottom: 6px;
+      letter-spacing: 3px;
+      text-align: center;
+      line-height: 1.3;
+      background: rgba(0,0,0,0.3);
+      padding: 5px 25px;
+      border-radius: 50px;
+      backdrop-filter: blur(3px);
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      border-radius: 35px;
+      background: #faf0d7;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.5), 0 20px 30px rgba(0,0,0,0.7);
+      border: 5px solid #8b5a2b;
+      width: 100%;
+      height: auto;
+      max-width: 800px;
+      touch-action: none;
+    }
+    .info-panel {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 5px 3px;
+      background: #4a3620;
+      border-radius: 50px;
+      padding: 10px 18px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.5), inset 0 1px 5px #ebc28e;
+      color: #ffecb3;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-wrap: wrap;
+      gap: 8px;
+      border: 2px solid #b98b4a;
+    }
+    .player-turn {
+      background: #ffb703;
+      color: #1e2b0c;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 0 15px #ffaa00;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .score {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    .score span {
+      background: #2f2819;
+      padding: 6px 16px;
+      border-radius: 25px;
+      color: #ffd966;
+      font-weight: bold;
+      border: 1px solid #ca9a4a;
+      font-size: 1.1rem;
+    }
+    .btn {
+      background: #d49b3b;
+      border: none;
+      color: #231f1a;
+      font-weight: bold;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #6b4e1e, 0 6px 12px black;
+      transition: all 0.1s ease;
+      border: 2px solid #ffd58c;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #5a3e1a, 0 5px 10px black;
+      background: #b87c2c;
+    }
+    .message-area {
+      font-size: 1.1rem;
+      background: #fff3cd;
+      color: #3b2b0f;
+      border-radius: 25px;
+      padding: 6px 16px;
+      font-weight: bold;
+    }
+    .end-turn-btn {
+      background: #e67e22;
+      color: white;
+      font-weight: bold;
+      padding: 8px 22px;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #a0401c, 0 6px 12px black;
+      transition: all 0.1s ease;
+      border: 2px solid #f0a04b;
+      letter-spacing: 1px;
+    }
+    .end-turn-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #7a2e12, 0 5px 10px black;
+      background: #c96a1e;
+    }
+    @media (max-width: 650px) {
+      .info-panel {
+        flex-direction: column;
+        align-items: center;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+  <div class="game-container">
+    <h1>✨ دیسی شطرنج ✨</h1>
+    <canvas id="gameCanvas" width="800" height="800" aria-label="دیسی شطرنج بورڈ"></canvas>
+    <div class="info-panel">
+      <div class="player-turn" id="turnIndicator">
+        <span>🔴</span> پلیئر 1 کی باری
+      </div>
+      <div class="score">
+        <span id="p1Score">🔴 10</span>
+        <span id="p2Score">🔵 10</span>
+      </div>
+      <button class="btn" id="resetButton"><span>🔄</span> نئی گیم</button>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center; margin-top: 6px;">
+      <div class="message-area" id="statusMessage">⚠️ گوٹی منتخب کریں</div>
+      <button class="end-turn-btn" id="endTurnButton" style="display: none;">✅ باری ختم کریں</button>
+    </div>
+  </div>
+  <div style="color: #ffe3a5; margin-top: 6px; font-weight: bold; text-shadow: 1px 1px 2px black; font-size: 1rem;">
+    دائیں بائیں آگے پیچھے اور کراس میں کاٹیں | مسلسل کٹس ممکن ہیں
+  </div>
+</div>
+
+<script>
+  (function() {
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // ----- گیم اسٹیٹ -----
+    const BOARD_SIZE = 5;
+    const TOTAL_PIECES_PER_PLAYER = 10; // ہر پلیئر کے 10 مہرے
+    const CELL_SIZE = canvas.width / (BOARD_SIZE + 0.5);
+    const OFFSET = (canvas.width - CELL_SIZE * (BOARD_SIZE - 1)) / 2;
+
+    let board = [];
+    let currentPlayer = 1;
+    let selectedRow = -1, selectedCol = -1;
+    let gameOver = false;
+    let winner = null;
+    let player1Pieces = TOTAL_PIECES_PER_PLAYER;
+    let player2Pieces = TOTAL_PIECES_PER_PLAYER;
+    let validMoves = [];
+    
+    // ملٹی کٹ ٹریکنگ
+    let hasCapturedThisTurn = false;
+    let mandatoryCapturePiece = null;
+    let turnActive = false;
+
+    // ----- بورڈ انیشیئلائز (10 گوٹیاں فی پلیئر) -----
+    function initBoard() {
+      board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(null));
+      
+      // پلیئر 1 (ریڈ) - نیچے دو قطاروں میں 10 گوٹیاں
+      // row 4: 5 گوٹیاں, row 3: 5 گوٹیاں
+      for (let c = 0; c < BOARD_SIZE; c++) {
+        board[4][c] = { player: 1 }; // پوری قطار 4
+        board[3][c] = { player: 1 }; // پوری قطار 3
+      }
+      
+      // پلیئر 2 (بلیو) - اوپر دو قطاروں میں 10 گوٹیاں
+      // row 0: 5 گوٹیاں, row 1: 5 گوٹیاں
+      for (let c = 0; c < BOARD_SIZE; c++) {
+        board[0][c] = { player: 2 }; // پوری قطار 0
+        board[1][c] = { player: 2 }; // پوری قطار 1
+      }
+      
+      player1Pieces = TOTAL_PIECES_PER_PLAYER;
+      player2Pieces = TOTAL_PIECES_PER_PLAYER;
+      currentPlayer = 1;
+      selectedRow = -1;
+      selectedCol = -1;
+      gameOver = false;
+      winner = null;
+      validMoves = [];
+      hasCapturedThisTurn = false;
+      mandatoryCapturePiece = null;
+      turnActive = false;
+      updatePieceCounts();
+      updateUI();
+    }
+
+    // ----- گوٹیوں کی درست گنتی (بورڈ سے شمار) -----
+    function updatePieceCounts() {
+      let p1 = 0, p2 = 0;
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          if (board[r][c]) {
+            if (board[r][c].player === 1) p1++;
+            else if (board[r][c].player === 2) p2++;
+          }
+        }
+      }
+      player1Pieces = p1;
+      player2Pieces = p2;
+    }
+
+    // ----- کوآرڈینیٹ سے گرڈ تلاش کریں -----
+    function getGridFromCoord(x, y) {
+      let col = Math.round((x - OFFSET) / CELL_SIZE);
+      let row = Math.round((y - OFFSET) / CELL_SIZE);
+      if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) return null;
+      const cellX = OFFSET + col * CELL_SIZE;
+      const cellY = OFFSET + row * CELL_SIZE;
+      const dist = Math.hypot(x - cellX, y - cellY);
+      if (dist > CELL_SIZE * 0.44) return null;
+      return { row, col };
+    }
+
+    // ----- کسی گوٹی کے لیے صرف کٹ کی چالیں -----
+    function getCaptureMovesOnly(row, col, player) {
+      const captures = [];
+      const directions = [
+        [-1, -1], [-1, 0], [-1, 1],
+        [0, -1],           [0, 1],
+        [1, -1],  [1, 0],  [1, 1]
+      ];
+
+      for (let [dr, dc] of directions) {
+        const nr = row + dr;
+        const nc = col + dc;
+        if (nr < 0 || nr >= BOARD_SIZE || nc < 0 || nc >= BOARD_SIZE) continue;
+        
+        if (board[nr][nc] && board[nr][nc].player !== player) {
+          const jumpRow = nr + dr;
+          const jumpCol = nc + dc;
+          if (jumpRow >= 0 && jumpRow < BOARD_SIZE && jumpCol >= 0 && jumpCol < BOARD_SIZE) {
+            if (board[jumpRow][jumpCol] === null) {
+              captures.push({ 
+                row: jumpRow, 
+                col: jumpCol, 
+                type: 'capture', 
+                capturedRow: nr, 
+                capturedCol: nc 
+              });
+            }
+          }
+        }
+      }
+      return captures;
+    }
+
+    // ----- گوٹی کے لیے تمام ممکنہ چالیں (عام + کٹ) -----
+    function getAllMoves(row, col, player) {
+      const moves = [];
+      const directions = [
+        [-1, -1], [-1, 0], [-1, 1],
+        [0, -1],           [0, 1],
+        [1, -1],  [1, 0],  [1, 1]
+      ];
+
+      for (let [dr, dc] of directions) {
+        const nr = row + dr;
+        const nc = col + dc;
+        if (nr < 0 || nr >= BOARD_SIZE || nc < 0 || nc >= BOARD_SIZE) continue;
+        
+        if (board[nr][nc] === null) {
+          moves.push({ row: nr, col: nc, type: 'move' });
+        } else if (board[nr][nc].player !== player) {
+          const jumpRow = nr + dr;
+          const jumpCol = nc + dc;
+          if (jumpRow >= 0 && jumpRow < BOARD_SIZE && jumpCol >= 0 && jumpCol < BOARD_SIZE) {
+            if (board[jumpRow][jumpCol] === null) {
+              moves.push({ 
+                row: jumpRow, 
+                col: jumpCol, 
+                type: 'capture', 
+                capturedRow: nr, 
+                capturedCol: nc 
+              });
+            }
+          }
+        }
+      }
+      return moves;
+    }
+
+    // چیک کریں کہ کسی پلیئر کی کوئی گوٹی کٹ کر سکتی ہے؟
+    function playerHasAnyCapture(player) {
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          if (board[r][c] && board[r][c].player === player) {
+            if (getCaptureMovesOnly(r, c, player).length > 0) return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    // ----- گوٹی منتخب کریں -----
+    function selectPiece(row, col) {
+      if (gameOver) return;
+      
+      if (mandatoryCapturePiece) {
+        if (row !== mandatoryCapturePiece.row || col !== mandatoryCapturePiece.col) {
+          document.getElementById('statusMessage').textContent = '⚠️ آپ کو اس گوٹی سے کٹ جاری رکھنا ہے!';
+          return;
+        }
+      }
+      
+      if (board[row][col] && board[row][col].player === currentPlayer) {
+        selectedRow = row;
+        selectedCol = col;
+        
+        if (mandatoryCapturePiece) {
+          validMoves = getCaptureMovesOnly(row, col, currentPlayer);
+        } else {
+          if (!hasCapturedThisTurn && playerHasAnyCapture(currentPlayer)) {
+            validMoves = getCaptureMovesOnly(row, col, currentPlayer);
+            if (validMoves.length === 0) {
+              document.getElementById('statusMessage').textContent = '⚠️ کٹ لازمی ہے، اس گوٹی سے کٹ ممکن نہیں';
+              clearSelection();
+              updateUI();
+              return;
+            }
+          } else {
+            validMoves = getAllMoves(row, col, currentPlayer);
+          }
+        }
+        
+        updateUI();
+        document.getElementById('statusMessage').textContent = '✅ منزل کا انتخاب کریں';
+      } else {
+        clearSelection();
+        updateUI();
+        document.getElementById('statusMessage').textContent = '❌ اپنی گوٹی چنیں';
+      }
+    }
+
+    function clearSelection() {
+      selectedRow = -1;
+      selectedCol = -1;
+      validMoves = [];
+    }
+
+    // ----- چال چلیں -----
+    function makeMove(targetRow, targetCol) {
+      if (gameOver || selectedRow === -1 || selectedCol === -1) return false;
+
+      const move = validMoves.find(m => m.row === targetRow && m.col === targetCol);
+      if (!move) {
+        document.getElementById('statusMessage').textContent = '⛔ غلط چال';
+        return false;
+      }
+
+      const piece = board[selectedRow][selectedCol];
+      board[selectedRow][selectedCol] = null;
+      board[targetRow][targetCol] = piece;
+      const newRow = targetRow;
+      const newCol = targetCol;
+
+      let capturedThisMove = false;
+      
+      if (move.type === 'capture') {
+        board[move.capturedRow][move.capturedCol] = null;
+        hasCapturedThisTurn = true;
+        capturedThisMove = true;
+        turnActive = true;
+      }
+
+      updatePieceCounts();
+
+      // جیت/ہار چیک
+      if (player1Pieces === 0) {
+        gameOver = true;
+        winner = 2;
+        clearSelection();
+        mandatoryCapturePiece = null;
+        turnActive = false;
+        updateUI();
+        return true;
+      } else if (player2Pieces === 0) {
+        gameOver = true;
+        winner = 1;
+        clearSelection();
+        mandatoryCapturePiece = null;
+        turnActive = false;
+        updateUI();
+        return true;
+      }
+
+      // اگر کٹ کیا ہے تو مزید کٹ چیک کریں
+      if (capturedThisMove) {
+        const furtherCaptures = getCaptureMovesOnly(newRow, newCol, currentPlayer);
+        if (furtherCaptures.length > 0) {
+          mandatoryCapturePiece = { row: newRow, col: newCol };
+          selectedRow = newRow;
+          selectedCol = newCol;
+          validMoves = furtherCaptures;
+          updateUI();
+          document.getElementById('statusMessage').textContent = '⚔️ مزید کٹ کریں یا باری ختم کریں';
+          return true;
+        }
+      }
+
+      endCurrentTurn();
+      return true;
+    }
+
+    // ----- باری ختم کریں -----
+    function endCurrentTurn() {
+      clearSelection();
+      mandatoryCapturePiece = null;
+      hasCapturedThisTurn = false;
+      turnActive = false;
+      
+      const opponent = currentPlayer === 1 ? 2 : 1;
+      
+      let opponentHasMoves = false;
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          if (board[r][c] && board[r][c].player === opponent) {
+            if (getAllMoves(r, c, opponent).length > 0) {
+              opponentHasMoves = true;
+              break;
+            }
+          }
+        }
+        if (opponentHasMoves) break;
+      }
+      
+      if (!opponentHasMoves) {
+        gameOver = true;
+        winner = currentPlayer;
+      } else {
+        currentPlayer = opponent;
+      }
+      
+      updateUI();
+    }
+
+    // ----- باری ختم کرنے کا بٹن -----
+    function endTurnManually() {
+      if (gameOver || !turnActive) return;
+      if (mandatoryCapturePiece) {
+        const furtherCaptures = getCaptureMovesOnly(mandatoryCapturePiece.row, mandatoryCapturePiece.col, currentPlayer);
+        if (furtherCaptures.length > 0) {
+          document.getElementById('statusMessage').textContent = '⚠️ مزید کٹ ممکن ہے، پہلے کٹ کریں';
+          return;
+        }
+      }
+      endCurrentTurn();
+    }
+
+    // ----- کینوس کلک/ٹچ ہینڈلر -----
+    function handleCanvasInteraction(e) {
+      e.preventDefault();
+      if (gameOver) {
+        document.getElementById('statusMessage').textContent = '🏆 گیم ختم! نیا گیم شروع کریں';
+        return;
+      }
+
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+
+      let clientX, clientY;
+      if (e.touches) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
+
+      const canvasX = (clientX - rect.left) * scaleX;
+      const canvasY = (clientY - rect.top) * scaleY;
+
+      const gridPos = getGridFromCoord(canvasX, canvasY);
+      if (!gridPos) {
+        if (selectedRow !== -1 && !mandatoryCapturePiece) {
+          clearSelection();
+          updateUI();
+          document.getElementById('statusMessage').textContent = 'اپنی گوٹی چنیں';
+        }
+        return;
+      }
+
+      const { row, col } = gridPos;
+
+      if (selectedRow !== -1 && selectedCol !== -1) {
+        const success = makeMove(row, col);
+        if (!success) {
+          if (board[row][col] && board[row][col].player === currentPlayer) {
+            if (!mandatoryCapturePiece || (mandatoryCapturePiece.row === row && mandatoryCapturePiece.col === col)) {
+              selectPiece(row, col);
+            }
+          } else {
+            if (!mandatoryCapturePiece) {
+              clearSelection();
+            }
+            updateUI();
+            document.getElementById('statusMessage').textContent = '⛔ غلط جگہ';
+          }
+        }
+      } else {
+        if (board[row][col] && board[row][col].player === currentPlayer) {
+          selectPiece(row, col);
+        } else {
+          document.getElementById('statusMessage').textContent = '🔴🔵 اپنی گوٹی پر کلک کریں';
+        }
+      }
+    }
+
+    // ----- UI اپ ڈیٹ -----
+    function updateUI() {
+      drawBoard();
+      document.getElementById('p1Score').textContent = `🔴 ${player1Pieces}`;
+      document.getElementById('p2Score').textContent = `🔵 ${player2Pieces}`;
+
+      const turnEl = document.getElementById('turnIndicator');
+      const endTurnBtn = document.getElementById('endTurnButton');
+      
+      if (gameOver) {
+        if (winner === 1) turnEl.innerHTML = '<span>🏆</span> پلیئر 1 جیت گیا!';
+        else if (winner === 2) turnEl.innerHTML = '<span>🏆</span> پلیئر 2 جیت گیا!';
+        document.getElementById('statusMessage').textContent = '🎉 مبارک ہو! نیا گیم شروع کریں';
+        endTurnBtn.style.display = 'none';
+      } else {
+        turnEl.innerHTML = currentPlayer === 1 ? '<span>🔴</span> پلیئر 1 کی باری' : '<span>🔵</span> پلیئر 2 کی باری';
+        
+        if (turnActive && mandatoryCapturePiece) {
+          endTurnBtn.style.display = 'inline-block';
+        } else if (turnActive && !mandatoryCapturePiece) {
+          endTurnBtn.style.display = 'inline-block';
+        } else {
+          endTurnBtn.style.display = 'none';
+        }
+        
+        if (selectedRow === -1 && !turnActive) {
+          document.getElementById('statusMessage').textContent = '👆 گوٹی منتخب کریں';
+        }
+      }
+    }
+
+    // ----- بورڈ ڈرائنگ -----
+    function drawBoard() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGridAndSquares();
+      drawPieces();
+      drawSelectionHighlight();
+      drawValidMoveIndicators();
+      if (mandatoryCapturePiece) {
+        drawMandatoryPieceHighlight();
+      }
+    }
+
+    function drawMandatoryPieceHighlight() {
+      if (!mandatoryCapturePiece) return;
+      const x = OFFSET + mandatoryCapturePiece.col * CELL_SIZE;
+      const y = OFFSET + mandatoryCapturePiece.row * CELL_SIZE;
+      ctx.strokeStyle = '#ff4444';
+      ctx.lineWidth = 5;
+      ctx.shadowBlur = 25;
+      ctx.shadowColor = '#ff0000';
+      ctx.setLineDash([10, 5]);
+      ctx.beginPath();
+      ctx.arc(x, y, CELL_SIZE*0.44, 0, 2*Math.PI);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.shadowColor = 'transparent';
+    }
+
+    function drawGridAndSquares() {
+      ctx.strokeStyle = '#4a2c0f';
+      ctx.lineWidth = 4.5;
+      ctx.shadowColor = '#aa8b65';
+      ctx.shadowBlur = 4;
+
+      for (let i = 0; i < BOARD_SIZE; i++) {
+        const x = OFFSET + i * CELL_SIZE;
+        const y = OFFSET + i * CELL_SIZE;
+        ctx.beginPath();
+        ctx.moveTo(OFFSET, y);
+        ctx.lineTo(OFFSET + (BOARD_SIZE-1) * CELL_SIZE, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, OFFSET);
+        ctx.lineTo(x, OFFSET + (BOARD_SIZE-1) * CELL_SIZE);
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = '#7b5e3b';
+      ctx.lineWidth = 2.8;
+      for (let r = 0; r < BOARD_SIZE-1; r++) {
+        for (let c = 0; c < BOARD_SIZE-1; c++) {
+          const x1 = OFFSET + c * CELL_SIZE;
+          const y1 = OFFSET + r * CELL_SIZE;
+          const x2 = OFFSET + (c+1) * CELL_SIZE;
+          const y2 = OFFSET + (r+1) * CELL_SIZE;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(x2, y1);
+          ctx.lineTo(x1, y2);
+          ctx.stroke();
+        }
+      }
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      
+      ctx.fillStyle = '#3b280b';
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          ctx.beginPath();
+          ctx.arc(OFFSET + c * CELL_SIZE, OFFSET + r * CELL_SIZE, 7, 0, 2*Math.PI);
+          ctx.fill();
+        }
+      }
+    }
+
+    function drawPieces() {
+      for (let r = 0; r < BOARD_SIZE; r++) {
+        for (let c = 0; c < BOARD_SIZE; c++) {
+          if (board[r][c]) {
+            const x = OFFSET + c * CELL_SIZE;
+            const y = OFFSET + r * CELL_SIZE;
+            const player = board[r][c].player;
+            
+            ctx.shadowColor = '#333';
+            ctx.shadowBlur = 12;
+            ctx.beginPath();
+            ctx.arc(x, y, CELL_SIZE*0.35, 0, 2*Math.PI);
+            ctx.fillStyle = player === 1 ? '#c42e2e' : '#2e5cb8';
+            ctx.fill();
+            ctx.shadowBlur = 4;
+            ctx.strokeStyle = '#f9e076';
+            ctx.lineWidth = 3.5;
+            ctx.stroke();
+            
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.arc(x-2, y-2, CELL_SIZE*0.2, 0, 2*Math.PI);
+            ctx.fillStyle = player === 1 ? '#ff8c8c' : '#9bbdf0';
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 22px "Segoe UI"';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(player === 1 ? 'P1' : 'P2', x, y);
+          }
+        }
+      }
+      ctx.shadowColor = 'transparent';
+    }
+
+    function drawSelectionHighlight() {
+      if (selectedRow !== -1 && selectedCol !== -1) {
+        const x = OFFSET + selectedCol * CELL_SIZE;
+        const y = OFFSET + selectedRow * CELL_SIZE;
+        ctx.strokeStyle = '#ffd966';
+        ctx.lineWidth = 5;
+        ctx.shadowBlur = 22;
+        ctx.shadowColor = '#f0b300';
+        ctx.beginPath();
+        ctx.arc(x, y, CELL_SIZE*0.43, 0, 2*Math.PI);
+        ctx.stroke();
+        ctx.shadowColor = 'transparent';
+      }
+    }
+
+    function drawValidMoveIndicators() {
+      for (let move of validMoves) {
+        const x = OFFSET + move.col * CELL_SIZE;
+        const y = OFFSET + move.row * CELL_SIZE;
+        ctx.beginPath();
+        ctx.arc(x, y, CELL_SIZE*0.25, 0, 2*Math.PI);
+        ctx.fillStyle = move.type === 'capture' ? 'rgba(255, 200, 50, 0.95)' : 'rgba(80, 200, 120, 0.85)';
+        ctx.fill();
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2.8;
+        ctx.stroke();
+        if (move.type === 'capture') {
+          ctx.fillStyle = '#8b0000';
+          ctx.font = 'bold 26px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('⚔️', x, y);
+        }
+      }
+    }
+
+    // ----- ری سیٹ -----
+    function resetGame() {
+      initBoard();
+      clearSelection();
+      hasCapturedThisTurn = false;
+      mandatoryCapturePiece = null;
+      turnActive = false;
+      updateUI();
+      document.getElementById('statusMessage').textContent = 'نیا گیم! پلیئر 1 شروع کرے';
+    }
+
+    // ----- ایونٹ لسٹنرز -----
+    canvas.addEventListener('click', handleCanvasInteraction);
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      handleCanvasInteraction(e);
+    }, { passive: false });
+    canvas.addEventListener('touchend', (e) => e.preventDefault());
+    canvas.addEventListener('touchmove', (e) => e.preventDefault());
+
+    document.getElementById('resetButton').addEventListener('click', resetGame);
+    document.getElementById('endTurnButton').addEventListener('click', endTurnManually);
+
+    // شروع کریں
+    initBoard();
+    drawBoard();
+  })();
+</script>
+</body>
+</html>
